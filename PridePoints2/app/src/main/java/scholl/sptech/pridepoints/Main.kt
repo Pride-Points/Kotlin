@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
@@ -23,6 +24,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -61,25 +63,36 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             //Imagem aqui
-            Text(text = "BandeiraPride", Modifier.padding(vertical = 15.dp))
+            Spacer(modifier = Modifier.weight(0.5f))
+            Image(
+                painter = painterResource(id = R.mipmap.logo_header),
+                contentDescription = "Bandeira PP",
+                modifier = Modifier.size(25.dp))
 
             //Será buscado pela API?
-            Spacer(modifier = Modifier.weight(1f))
-            Text(text = "Av. Paulista", Modifier.padding(vertical = 15.dp))
             Spacer(modifier = Modifier.weight(2f))
+            Text(text = "Av. Paulista", Modifier.padding(vertical = 15.dp))
+            Spacer(modifier = Modifier.weight(1.5f))
 
             //AQUI PRECISA MANDAR PARA A TELA DE PERFIL
             TextButton(onClick = {
                 navController.navigate("PROFILE")
             }) {
-                Text(text = "teste")
+                Image(
+                    painter = painterResource(id = R.mipmap.avatar),
+                    contentDescription = "Bandeira PP",
+                    modifier = Modifier.size(25.dp))
             }
+            Spacer(modifier = Modifier.weight(0.5f))
+
 
         }
-        Divider(color = Color.Gray, thickness = 1.dp)
+        Divider(color = Color(android.graphics.Color.parseColor("#5800D6")),
+            thickness = 1.dp)
 
         NavHost(
             modifier = modifier,
@@ -115,17 +128,15 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
             MainFragmentos.values().forEach {
 
                 TextButton(modifier = Modifier.weight(1f),
-                    onClick = { navController.navigate(it.name) }
+                    onClick = { navController.navigate(it.name)}
                 ) {
                     // importar do androidx.compose...
-                    /* Image(
+                     Image(
                          painter = painterResource(id = it.imagem),
-                         contentDescription = it.descricao )
-                 */
-                    Text(text = "ibagem")
+                         contentDescription = it.descricao,
+                         modifier = Modifier.size(40.dp))
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
             }
         }
 

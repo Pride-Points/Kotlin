@@ -22,6 +22,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -56,7 +57,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
-    val mensagem = remember { mutableStateOf("será?") }
+    val selectedIndex = remember { mutableStateOf(0) }
+
+    val menuItems = remember {
+        mutableStateListOf(
+            MenuItem(R.mipmap.home_selecionado, R.mipmap.home_menu, isSelected = false),
+            MenuItem(R.mipmap.sinalizador_selecionado, R.mipmap.sinalizador_menu, isSelected = false),
+            MenuItem(R.mipmap.estrela_selecionado, R.mipmap.estrela_menu, isSelected = false)
+        )
+    }
 
     Column {
 
@@ -71,7 +80,8 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
             Image(
                 painter = painterResource(id = R.mipmap.logo_header),
                 contentDescription = "Bandeira PP",
-                modifier = Modifier.size(25.dp))
+                modifier = Modifier.size(25.dp)
+            )
 
             //Será buscado pela API?
             Spacer(modifier = Modifier.weight(2f))
@@ -85,14 +95,17 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
                 Image(
                     painter = painterResource(id = R.mipmap.avatar),
                     contentDescription = "Bandeira PP",
-                    modifier = Modifier.size(25.dp))
+                    modifier = Modifier.size(25.dp)
+                )
             }
             Spacer(modifier = Modifier.weight(0.5f))
 
 
         }
-        Divider(color = Color(android.graphics.Color.parseColor("#5800D6")),
-            thickness = 1.dp)
+        Divider(
+            color = Color(android.graphics.Color.parseColor("#5800D6")),
+            thickness = 1.dp
+        )
 
         NavHost(
             modifier = modifier,
@@ -103,7 +116,7 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
                 HomeScreen()
             }
             composable(MainFragmentos.TELA2.name) {
-                MapScreen(value = "Suco de água")
+                MapScreen()
             }
             composable(MainFragmentos.TELA3.name) {
                 MyReviewScreen()
@@ -125,7 +138,7 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            MainFragmentos.values().forEach {
+            /*MainFragmentos.values().forEach {
 
                 TextButton(modifier = Modifier.weight(1f),
                     onClick = { navController.navigate(it.name)}
@@ -137,10 +150,26 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
                          modifier = Modifier.size(40.dp))
                 }
 
+            }*/
+
+            menuItems.forEachIndexed { index, item ->
+                TextButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        selectedIndex.value = index
+                        navController.navigate(MainFragmentos.values()[index].name)
+                    }
+                ) {
+                    Image(
+                        painter = painterResource(id = if (index == selectedIndex.value) item.naoSelecionado else item.itemSelecionado),
+                        contentDescription = MainFragmentos.values()[index].descricao,
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
             }
+
+
         }
-
-
     }
 }
 

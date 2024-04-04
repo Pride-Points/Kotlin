@@ -9,8 +9,8 @@ fun HomeScreen(){
     Text("Aqui é a home")
 }
 @Composable
-fun MapScreen(value: String) {
-    Text("Aqui precisa ser a tela do mapa: ${value}")
+fun MapScreen() {
+    Text("Aqui precisa ser a tela do mapa")
 }
 
 @Composable

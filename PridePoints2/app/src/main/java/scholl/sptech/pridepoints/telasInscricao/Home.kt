@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints
+package scholl.sptech.pridepoints.telasInscricao
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,17 +7,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.ClickableText
 
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +29,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import scholl.sptech.pridepoints.R
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 class Home : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,7 +120,7 @@ fun PridePointsWelcomeScreen(backgroundColor: Long = 0xFF4200A1) {
 
             Spacer(modifier = Modifier.height(60.dp))
             OutlinedButton(
-                onClick = { /* TODO: Add sign up logic */ },
+                onClick = { },
                 border = BorderStroke(1.dp, Color.White),
                 shape = RectangleShape, // Isso torna o botão com cantos quadrados
                 colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White), // Define a cor de fundo do botão para branco

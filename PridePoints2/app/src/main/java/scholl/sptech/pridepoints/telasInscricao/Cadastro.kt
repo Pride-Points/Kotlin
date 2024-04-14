@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints
+package scholl.sptech.pridepoints.telasInscricao
 
 import android.content.Intent
 import android.os.Bundle
@@ -43,6 +43,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 import retrofit2.Callback
 import retrofit2.Response
+import scholl.sptech.pridepoints.ApiService
+import scholl.sptech.pridepoints.FisicaCriacaoDTO
+import scholl.sptech.pridepoints.R
+import scholl.sptech.pridepoints.UserResponse
 
 class Cadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

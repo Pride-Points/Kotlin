@@ -4,18 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -35,6 +31,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import scholl.sptech.pridepoints.fragmentos.HomeScreen
+import scholl.sptech.pridepoints.fragmentos.MainFragmentos
+import scholl.sptech.pridepoints.fragmentos.MapScreen
+import scholl.sptech.pridepoints.fragmentos.MenuItem
+import scholl.sptech.pridepoints.fragmentos.MyReviewScreen
+import scholl.sptech.pridepoints.fragmentos.ProfileScreen
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 
 

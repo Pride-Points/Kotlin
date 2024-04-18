@@ -2,7 +2,7 @@ package scholl.sptech.pridepoints.fragmentos
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import scholl.sptech.pridepoints.menuitens.minhasavaliacoes.MinhasAvaliacoes
+import scholl.sptech.pridepoints.menuitens.MinhasAvaliacoes
 
 @Composable
 fun HomeScreen(){

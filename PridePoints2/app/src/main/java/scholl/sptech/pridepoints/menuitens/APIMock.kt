@@ -2,7 +2,7 @@ package scholl.sptech.pridepoints.menuitens
 
 import retrofit2.Call
 import retrofit2.http.GET
-import scholl.sptech.pridepoints.menuitens.Avaliacoes
+import scholl.sptech.pridepoints.menuitens.avaliacoes.Avaliacoes
 
 interface APIMock {
     @GET("/mockaval")

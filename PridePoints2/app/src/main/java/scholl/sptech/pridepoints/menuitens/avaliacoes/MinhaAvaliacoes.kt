@@ -1,5 +1,6 @@
 package scholl.sptech.pridepoints.menuitens.avaliacoes
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,14 +9,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -43,27 +44,74 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import scholl.sptech.pridepoints.R
 import scholl.sptech.pridepoints.menuitens.RetrofitMock
 
 @Composable
-fun ModalEditar(
-    showDialog: Boolean,
-    onCloseDialog: () -> Unit
+fun ModalDeletar(
+    showDialogDelete: Boolean,
+    onCloseDialog: () -> Unit,
+    onConfirmDialog: () -> Unit
 ) {
-    if (showDialog) {
+    if (showDialogDelete) {
+
+        AlertDialog(
+            onDismissRequest = onCloseDialog,
+            title = { Text(text = "Gostaria de excluir esta avaliação?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onConfirmDialog()
+                        onCloseDialog()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFFFFFF),
+                        contentColor = Color.White
+                    ), modifier = Modifier.border(
+                        1.dp, Color.Black, RoundedCornerShape(100.dp)
+                    )
+                ) {
+                    Text(text = "Sim", color = Color.Black)
+                }
+            },
+            dismissButton = {
+                Button(onClick = onCloseDialog) {
+                    Text(text = "Não")
+                }
+            },
+            shape = RoundedCornerShape(16.dp),
+        )
+
+    }
+}
+
+@Composable
+fun ModalEditar(
+    showDialogEdit: Boolean,
+    onCloseDialog: () -> Unit,
+    onConfirmDialog: () -> Unit
+) {
+    if (showDialogEdit) {
 
         AlertDialog(
             onDismissRequest = onCloseDialog,
             title = { Text(text = "Gostaria de editar esta avaliação?") },
             confirmButton = {
-                Button(onClick = onCloseDialog,
+                Button(
+                    onClick = {
+                        onConfirmDialog()
+                        onCloseDialog()
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFFFFFFF),
-                        contentColor = Color.White), modifier = Modifier.border(
-                        1.dp, Color.Black, RoundedCornerShape(100.dp))
+                        contentColor = Color.White
+                    ), modifier = Modifier.border(
+                        1.dp, Color.Black, RoundedCornerShape(100.dp)
+                    )
                 ) {
                     Text(text = "Sim", color = Color.Black)
                 }
@@ -110,18 +158,53 @@ fun MinhasAvaliacoes() {
 
     Column {
         if (avals.isEmpty()) {
-            Text(text = "Faça sua primeira avaliação para ela aparecer aqui :)")
+            Row(
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Faça sua primeira avaliação para ela aparecer aqui!",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 23.sp
+                    )
+                )
+            }
         } else {
-            Text("Suas avaliações!")
+            Row(
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.width(30.dp))
+                Text(
+                    text = "Suas avaliações!",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 23.sp
+                    )
+                )
+            }
 
-            LazyColumn(Modifier.height(707.dp)) {
+            LazyColumn(Modifier.height(650.dp)) {
                 items(items = avals) { aval ->
                     var isExpanded: Boolean by remember {
                         mutableStateOf(false)
                     }
 
-                    var showDialog by remember {
+                    var showDialogEdit by remember {
                         mutableStateOf(false)
+                    }
+
+                    var showDialogDelete by remember {
+                        mutableStateOf(false)
+                    }
+
+                    var selectedItem by remember {
+                        mutableStateOf<Avaliacoes?>(null)
                     }
 
                     Column(
@@ -145,6 +228,8 @@ fun MinhasAvaliacoes() {
                                 Column(
                                     verticalArrangement = Arrangement.spacedBy(4.dp)
                                 ) {
+                                    val contexto = LocalContext.current
+
                                     Row(modifier = Modifier.fillMaxWidth()) {
                                         Text(
                                             text = "${aval.loja}",
@@ -157,7 +242,7 @@ fun MinhasAvaliacoes() {
 
                                         val totalEstrelas = 5
                                         val estrelasAmarelas = aval.estrelas
-                                        val estrelasCinza = totalEstrelas - estrelasAmarelas
+                                        val estrelasCinza = totalEstrelas - estrelasAmarelas!!
                                         Row {
                                             repeat(estrelasAmarelas) {
                                                 Image(
@@ -177,6 +262,7 @@ fun MinhasAvaliacoes() {
                                         }
                                     }
 
+                                    //Ver mais e limitação de caracteres
                                     val maxPreviewLength = 50
                                     val textToShow =
                                         if (isExpanded || aval.comentario!!.length <= maxPreviewLength) {
@@ -208,13 +294,22 @@ fun MinhasAvaliacoes() {
                                         style = TextStyle(fontSize = 14.sp)
                                     )
 
-
                                     Row(
                                         verticalAlignment = Alignment.Bottom,
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(8.dp)
                                     ) {
+
+                                        //TERCEIRA SPRINT DISCUSSÃO
+                                        /* Text(
+                                             text = "${aval.sentimento}",
+                                             color = Color(0xFF5800D6),
+                                             fontWeight = FontWeight.Bold,
+                                             fontSize = 15.sp
+                                         )*/
+
+                                        //Ver menos
                                         if (isExpanded) {
                                             Button(
                                                 onClick = { isExpanded = false },
@@ -232,48 +327,86 @@ fun MinhasAvaliacoes() {
 
                                         }
 
-                                        /*if (!isExpanded && aval.comentario!!.length > 100) {
-                                            Button(onClick = { isExpanded = true }) {
-                                                Text("Ver mais")
-                                            }
-                                        }
-                                        if (isExpanded) {
-                                            Button(onClick = { isExpanded = false }) {
-                                                Text("Ver menos")
-                                            }
-                                        }
-*/
                                         Spacer(modifier = Modifier.weight(1f))
-
 
                                         Image(
                                             painter = painterResource(id = R.mipmap.editar_avaliacao),
                                             contentDescription = "editar",
                                             Modifier
                                                 .size(27.dp)
-                                                .clickable { showDialog = true }
+                                                .clickable {
+                                                    showDialogEdit = true
+                                                    selectedItem = aval
+                                                }
                                         )
 
 
                                         Image(
                                             painter = painterResource(id = R.mipmap.linha_avaliacao),
-                                            contentDescription = "editar",
+                                            contentDescription = "linha",
                                             Modifier.size(27.dp)
                                         )
 
                                         Image(
                                             painter = painterResource(id = R.mipmap.deletar_avaliacao),
-                                            contentDescription = "editar",
+                                            contentDescription = "delete",
                                             Modifier
                                                 .size(27.dp)
-                                                .clickable { }
+                                                .clickable {
+                                                    showDialogDelete = true
+                                                    selectedItem = aval
+                                                }
 
                                         )
 
-                                        ModalEditar(
-                                            showDialog = showDialog,
-                                            onCloseDialog = { showDialog = false }
-                                        )
+                                        if (showDialogDelete) {
+                                            ModalDeletar(
+                                                showDialogDelete = showDialogDelete,
+                                                onCloseDialog = { showDialogDelete = false },
+                                                onConfirmDialog = {
+                                                    apiAval.delete(aval.id)
+                                                        .enqueue(object : Callback<ResponseBody> {
+                                                            override fun onResponse(
+                                                                call: Call<ResponseBody>,
+                                                                response: Response<ResponseBody>
+                                                            ) {
+                                                                if (response.isSuccessful) {
+                                                                    // Tratar sucesso, atualizar UI conforme necessário
+                                                                }
+                                                            }
+
+                                                            override fun onFailure(
+                                                                call: Call<ResponseBody>,
+                                                                t: Throwable
+                                                            ) {
+
+                                                            }
+
+                                                        })
+
+                                                }
+                                            )
+                                        }
+
+                                        if (showDialogEdit) {
+                                            ModalEditar(
+                                                showDialogEdit = showDialogEdit,
+                                                onCloseDialog = { showDialogEdit = false },
+                                                onConfirmDialog = {
+                                                    selectedItem?.let {
+                                                        val telaEdit = Intent(
+                                                            contexto,
+                                                            TelaEdicao::class.java
+                                                        )  // Usar 'it.id' supondo que cada avaliação tem um ID
+                                                        telaEdit.putExtra(
+                                                            "itemSelecionado",
+                                                            selectedItem
+                                                        )
+                                                        contexto.startActivity(telaEdit)
+                                                    }
+                                                }
+                                            )
+                                        }
                                     }
                                 }
                             }

@@ -369,11 +369,7 @@ fun MinhasAvaliacoes() {
                                                             override fun onResponse(
                                                                 call: Call<ResponseBody>,
                                                                 response: Response<ResponseBody>
-                                                            ) {
-                                                                if (response.isSuccessful) {
-                                                                    // Tratar sucesso, atualizar UI conforme necessário
-                                                                }
-                                                            }
+                                                            ){}
 
                                                             override fun onFailure(
                                                                 call: Call<ResponseBody>,

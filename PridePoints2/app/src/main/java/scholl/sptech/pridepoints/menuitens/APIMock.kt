@@ -1,6 +1,5 @@
 package scholl.sptech.pridepoints.menuitens
 
-import androidx.compose.runtime.MutableState
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body

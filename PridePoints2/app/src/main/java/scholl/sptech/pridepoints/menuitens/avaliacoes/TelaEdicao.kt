@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -98,18 +97,11 @@ fun TelaEdicao(extras: Bundle?, activity: Activity) {
     val (novaEdit, novaEditSetter) = remember {
         mutableStateOf(Avaliacoes(aval!!.id, aval.loja))
     }
-    val msgCadastro = remember {
-        mutableStateOf(false)
-    }
-
 
     val totalEstrelas = 5
     var estrelasSelecionadas by remember {
         mutableStateOf(aval!!.estrelas)
     }
-
-    //TESTAR
-    var selectedStarIndex by remember { mutableStateOf(0) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

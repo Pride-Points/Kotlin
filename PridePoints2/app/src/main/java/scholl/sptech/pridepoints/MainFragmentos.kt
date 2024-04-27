@@ -18,7 +18,7 @@ fun MyReviewScreen(){
     Text("Aqui é a tela de avaliações")
 }
 
-//Apagar após a tela de perfil ser feita
+//Apagar após a tela de perfil ser feita.
 @Composable
 fun ProfileScreen(){
     Text("Aqui precisa ser o perfil")

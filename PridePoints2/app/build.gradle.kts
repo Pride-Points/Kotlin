@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+
+
 android {
     namespace = "scholl.sptech.pridepoints"
     compileSdk = 34
@@ -50,6 +52,8 @@ android {
 }
 
 dependencies {
+    implementation("com.mapbox.extension:maps-compose:11.3.1")
+    implementation("com.mapbox.maps:android:11.3.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")

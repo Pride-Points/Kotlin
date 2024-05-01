@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.telasInscricao
+package scholl.sptech.pridepoints.front.telasInscricao
 
 import android.content.Intent
 import retrofit2.Call
@@ -40,9 +40,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import scholl.sptech.pridepoints.NetworkService
+import scholl.sptech.pridepoints.conexao.NetworkService
 import scholl.sptech.pridepoints.R
-import scholl.sptech.pridepoints.UserResponse
+import scholl.sptech.pridepoints.classes.UsuarioToken
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 
 class Login : ComponentActivity() {
@@ -56,19 +56,19 @@ class Login : ComponentActivity() {
                     color = Color(0xFF4200A1) // Cor de fundo do app atualizada aqui
                 ) {
                     LoginScreen { email, senha ->
-                        performLogin(email, senha)
+                        realizarLogin(email, senha)
                     }
                 }
             }
         }
     }
 
-    private fun performLogin(email: String, senha: String) {
+    private fun realizarLogin(email: String, senha: String) {
         val networkService = NetworkService()
         val context = this
 
-        networkService.performLogin(email, senha).enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+        networkService.realizarLogin(email, senha).enqueue(object : Callback<UsuarioToken> {
+            override fun onResponse(call: Call<UsuarioToken>, response: Response<UsuarioToken>) {
                 if (response.isSuccessful) {
                     Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_LONG).show()
                 } else {
@@ -76,7 +76,7 @@ class Login : ComponentActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+            override fun onFailure(call: Call<UsuarioToken>, t: Throwable) {
                 Toast.makeText(context, "Falha na comunicação: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
@@ -84,7 +84,7 @@ class Login : ComponentActivity() {
 
 }
 @Composable
-fun LoginScreen(onLogin: (String, String) -> Unit) {
+fun LoginScreen(realizarLogin: (String, String) -> Unit) {
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -181,7 +181,7 @@ fun LoginScreen(onLogin: (String, String) -> Unit) {
                 Spacer(modifier = Modifier.height(20.dp))
 
                     Button(
-                        onClick = { onLogin(email, senha) },
+                        onClick = { realizarLogin(email, senha) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(48.dp), // Defina a altura do botão conforme necessário

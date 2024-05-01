@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.telasInscricao
+package scholl.sptech.pridepoints.front.telasInscricao
 
 import android.content.Intent
 import android.os.Bundle
@@ -43,10 +43,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 import retrofit2.Callback
 import retrofit2.Response
-import scholl.sptech.pridepoints.ApiService
-import scholl.sptech.pridepoints.FisicaCriacaoDTO
+import scholl.sptech.pridepoints.conexao.ApiService
+import scholl.sptech.pridepoints.conexao.FisicaCriacaoDTO
 import scholl.sptech.pridepoints.R
-import scholl.sptech.pridepoints.UserResponse
+import scholl.sptech.pridepoints.classes.UsuarioCadastro
+import scholl.sptech.pridepoints.classes.UsuarioToken
 
 class Cadastro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +63,7 @@ class Cadastro : ComponentActivity() {
 }
 
 
-fun performCadastro(usuarioInfo: UserInfo, onResult: (Boolean, String) -> Unit) {
+fun performCadastro(usuarioInfo: UsuarioCadastro, onResult: (Boolean, String) -> Unit) {
     val retrofit = Retrofit.Builder()
         .baseUrl("http://10.0.2.2:8080/users") // Altere para a URL base do seu backend
         .addConverterFactory(GsonConverterFactory.create())
@@ -78,8 +79,8 @@ fun performCadastro(usuarioInfo: UserInfo, onResult: (Boolean, String) -> Unit) 
         senha = usuarioInfo.senha
     )
 
-    apiService.cadastrarUsuario(fisicaCriacaoDTO).enqueue(object : Callback<UserResponse> {
-        override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+    apiService.cadastrarUsuario(fisicaCriacaoDTO).enqueue(object : Callback<UsuarioToken> {
+        override fun onResponse(call: Call<UsuarioToken>, response: Response<UsuarioToken>) {
             if (response.isSuccessful) {
                 // Cadastro bem-sucedido
                 onResult(true, "Cadastro concluído com sucesso!")
@@ -89,7 +90,7 @@ fun performCadastro(usuarioInfo: UserInfo, onResult: (Boolean, String) -> Unit) 
             }
         }
 
-        override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+        override fun onFailure(call: Call<UsuarioToken>, t: Throwable) {
             // Falha na comunicação com o servidor
             onResult(false, "Falha na comunicação: ${t.message}")
         }
@@ -97,20 +98,13 @@ fun performCadastro(usuarioInfo: UserInfo, onResult: (Boolean, String) -> Unit) 
 }
 
 
-    data class UserInfo(
-        var nome: String = "",
-        var email: String = "",
-        var genero: String = "",
-        var orientacaoSexual: String = "",
-        var cpf: String = "",
-        var senha: String = ""
-    )
+
 
         @Composable
         fun TelaCadastro() {
             val context = LocalContext.current
             var etapaAtual by remember { mutableStateOf(1) }
-            var usuarioInfo = remember { mutableStateOf(UserInfo()) }
+            var usuarioInfo = remember { mutableStateOf(UsuarioCadastro()) }
             var cadastroResult by remember { mutableStateOf<Pair<Boolean, String>?>(null) }
 
             Surface(
@@ -310,7 +304,7 @@ fun CadastroEtapaDois(onCadastroCompleto: (String, String, String) -> Unit) {
     var cpf by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     var confirmarSenha by remember { mutableStateOf("") }
-    var usuarioInfo = remember { mutableStateOf(UserInfo()) }
+    var usuarioInfo = remember { mutableStateOf(UsuarioCadastro()) }
 
 
     Column {

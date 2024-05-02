@@ -61,7 +61,6 @@ import retrofit2.Response
 import scholl.sptech.pridepoints.R
 import scholl.sptech.pridepoints.classes.UsuarioToken
 import scholl.sptech.pridepoints.conexao.NetworkService
-import scholl.sptech.pridepoints.front.telasInscricao.Cadastro
 import scholl.sptech.pridepoints.front.telasInscricao.Login
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 

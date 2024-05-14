@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -133,18 +135,20 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
 
     Column {
         if (avals.isEmpty()) {
-            Row(
+            Box(
+                contentAlignment = Alignment.Center, // Assegura centralização do conteúdo no Box
                 modifier = Modifier
-                    .padding(vertical = 20.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                    .height(500.dp) // Define altura do Box
+                    .fillMaxWidth() // Assegura que o Box ocupe a largura total do seu contêiner pai
             ) {
                 Text(
-                    text = "Faça sua primeira avaliação para ela aparecer aqui!",
+                    "Faça sua primeira avaliação!",
                     style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 23.sp
-                    )
+                        fontSize = 20.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center // Alinha o texto ao centro horizontalmente
+                    ),
+                    modifier = Modifier.fillMaxWidth() // Assegura que o Text ocupe a largura total do Box
                 )
             }
         } else {

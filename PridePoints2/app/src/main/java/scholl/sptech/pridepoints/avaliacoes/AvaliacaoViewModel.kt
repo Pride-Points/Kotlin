@@ -11,7 +11,15 @@ import scholl.sptech.pridepoints.api.RetrofitService
 
 class AvaliacaoViewModel : ViewModel() {
 
-    val avaliacoes = MutableLiveData(SnapshotStateList<Avaliacao>())
+    val mockAvaliacoes = SnapshotStateList<Avaliacao>().apply {
+        add(Avaliacao(id = 1, loja = "Loja A", comentario = "Ótimo serviço!", sentimento = "positivo", estrelas = 5))
+        add(Avaliacao(id = 2, loja = "Loja B", comentario = "Poderia ser melhor.", sentimento = "negativo", estrelas = 2))
+        add(Avaliacao(id = 3, loja = "Loja C", comentario = "Atendimento razoável.", sentimento = "neutro", estrelas = 3))
+        add(Avaliacao(id = 4, loja = "Loja D", comentario = "Excelente qualidade dos produtos!", sentimento = "positivo", estrelas = 4))
+        add(Avaliacao(id = 5, loja = "Loja E", comentario = "Não gostei do atendimento.", sentimento = "negativo", estrelas = 1))
+    }
+
+    val avaliacoes = MutableLiveData(mockAvaliacoes)
 
     val api = RetrofitService.getApiPridePointsService()
     val erroApi = MutableLiveData("")

@@ -17,6 +17,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import scholl.sptech.pridepoints.eventosregiao.HomeEventos
+import scholl.sptech.pridepoints.menuitens.avaliacoes.MinhasAvaliacoes
 
 @Composable
 fun HomeScreen(){
@@ -47,7 +48,7 @@ fun MapScreen() {
 
 @Composable
 fun MyReviewScreen(){
-    Text("Aqui é a tela de avaliações")
+    MinhasAvaliacoes()
 }
 
 //Apagar após a tela de perfil ser feita

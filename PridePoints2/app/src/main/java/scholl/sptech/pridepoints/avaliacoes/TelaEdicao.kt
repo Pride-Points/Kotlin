@@ -42,13 +42,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import scholl.sptech.pridepoints.R
 import scholl.sptech.pridepoints.avaliacoes.Avaliacao
 import scholl.sptech.pridepoints.avaliacoes.AvaliacaoViewModel
-import scholl.sptech.pridepoints.menuitens.RetrofitMock
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 
 class TelaEdicao : ComponentActivity() {
@@ -77,7 +73,7 @@ class TelaEdicao : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 //o nome é extras mas o tipo é bundle
-fun TelaEdicao(extras: Bundle?, activity: Activity, AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel()) {
+fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel()) {
 
 
     val text = buildAnnotatedString {
@@ -278,7 +274,7 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, AvaliacaoViewModel: Avaliaca
         Spacer(modifier = Modifier.height(30.dp))
 
         Button(modifier = Modifier.size(120.dp, 60.dp), onClick = {
-            AvaliacaoViewModel.atualizarAvaliacao(aval!!.id, novaEdit, onSuccess = {
+            avaliacaoViewModel.atualizarAvaliacao(aval!!.id, novaEdit, onSuccess = {
                 activity.finish()
             }, onError = {
                 // Lidar com o erro, mostrar uma mensagem ao usuário, etc.

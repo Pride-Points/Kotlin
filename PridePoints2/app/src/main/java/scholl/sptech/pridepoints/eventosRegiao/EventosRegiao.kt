@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.eventosregiao
+package scholl.sptech.pridepoints.eventosRegiao
 
 import java.time.LocalDate
 

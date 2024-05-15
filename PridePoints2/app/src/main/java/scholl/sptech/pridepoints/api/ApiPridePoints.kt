@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import scholl.sptech.pridepoints.avaliacoes.Avaliacao
-import scholl.sptech.pridepoints.eventosregiao.EventosRegiao
+import scholl.sptech.pridepoints.eventosRegiao.EventosRegiao
 
 interface ApiPridePoints {
 

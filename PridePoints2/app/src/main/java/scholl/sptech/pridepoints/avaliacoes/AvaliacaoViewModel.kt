@@ -19,7 +19,7 @@ class AvaliacaoViewModel : ViewModel() {
         add(Avaliacao(id = 5, loja = "Loja E", comentario = "Não gostei do atendimento.", sentimento = "negativo", estrelas = 1))
     }
 
-    val avaliacoes = MutableLiveData(SnapshotStateList<Avaliacao>())
+    val avaliacoes = MutableLiveData(mockAvaliacoes)
 
     val api = RetrofitService.getApiPridePointsService()
     val erroApi = MutableLiveData("")

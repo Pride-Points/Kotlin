@@ -29,6 +29,8 @@
         </activity>
         <activity android:name=".telasInscricao.Login"></activity>
         <activity android:name=".telasInscricao.Cadastro"></activity>
+        <activity android:name=".menuitens.avaliacoes.TelaEdicao">
+        </activity>
     </application>
 
 </manifest>

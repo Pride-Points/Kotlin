@@ -20,16 +20,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.text.font.FontWeight
-
-
+import scholl.sptech.pridepoints.R
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardElevation
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
 

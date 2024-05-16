@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.avaliacoes
+package scholl.sptech.pridepoints.front.avaliacoes
 
 
 import androidx.compose.foundation.Image

@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.fragmentos
+package scholl.sptech.pridepoints.front.fragmentos
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +13,10 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import scholl.sptech.pridepoints.eventosregiao.HomeEventos
+import scholl.sptech.pridepoints.front.avaliacoes.TelaAvaliacao
+import scholl.sptech.pridepoints.front.eventosregiao.HomeEventos
+import scholl.sptech.pridepoints.front.perfilusuarios.TelaPerfilConfiguracao
 import scholl.sptech.pridepoints.menuitens.avaliacoes.MinhasAvaliacoes
-import scholl.sptech.pridepoints.perfilusuarios.TelaPerfil
 
 @Composable
 fun HomeScreen(){
@@ -28,13 +29,13 @@ fun HomeScreen(){
 
     Column (horizontalAlignment = Alignment.CenterHorizontally){
         Spacer(modifier = Modifier.height(30.dp))
-            Text(
-                text = text,
-                fontSize = 22.sp,
-                color = Color.Black
-            )
+        Text(
+            text = text,
+            fontSize = 22.sp,
+            color = Color.Black
+        )
         Spacer(modifier = Modifier.height(10.dp))
-            HomeEventos()
+        HomeEventos()
     }
 
 
@@ -52,6 +53,6 @@ fun MyReviewScreen(){
 //Apagar após a tela de perfil ser feita
 @Composable
 fun ProfileScreen(){
-    TelaPerfil()
+    TelaPerfilConfiguracao()
 }
 

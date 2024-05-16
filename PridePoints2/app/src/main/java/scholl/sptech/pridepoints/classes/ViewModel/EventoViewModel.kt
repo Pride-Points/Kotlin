@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.eventosregiao
+package scholl.sptech.pridepoints.classes.ViewModel
 
 import android.util.Log
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import scholl.sptech.pridepoints.api.RetrofitService
+import scholl.sptech.pridepoints.classes.entidades.EventosRegiao
 
 class EventoViewModel : ViewModel() {
 

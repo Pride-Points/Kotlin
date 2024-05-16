@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.avaliacoes
+package scholl.sptech.pridepoints.classes.entidades
 
 import java.io.Serializable
 

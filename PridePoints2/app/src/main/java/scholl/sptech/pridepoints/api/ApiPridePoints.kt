@@ -1,15 +1,22 @@
 package scholl.sptech.pridepoints.api
 
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import scholl.sptech.pridepoints.avaliacoes.Avaliacao
-import scholl.sptech.pridepoints.eventosregiao.EventosRegiao
-import scholl.sptech.pridepoints.perfilusuarios.ImagemPerfil
+import scholl.sptech.pridepoints.classes.entidades.Avaliacao
+import scholl.sptech.pridepoints.classes.entidades.AvaliacaoDTO
+import scholl.sptech.pridepoints.classes.entidades.Credenciais
+import scholl.sptech.pridepoints.classes.entidades.EventosRegiao
+import scholl.sptech.pridepoints.classes.entidades.ImagemPerfil
+import scholl.sptech.pridepoints.classes.entidades.UsuarioCadastro
+import scholl.sptech.pridepoints.classes.entidades.UsuarioToken
 
 interface ApiPridePoints {
 
@@ -28,8 +35,17 @@ interface ApiPridePoints {
     @DELETE("/avaliacoes/{idAvaliacao}")
     suspend fun deleteAvaliacao(@Path("idAvaliacao") idAvaliacao: Int): Response<Unit>
 
-    @POST("/users/imagem-perfil/{idUser}")
-    suspend fun postUserImage(@Path("idUser") idUser: Long, @Body imageInfo: ImagemPerfil): Response<ImagemPerfil>
+    @GET("/avaliacoes/usuario/{idUsuario}")
+    suspend fun getAvaliacoesUsuario(
+        @Path("idUsuario") idUsuario: Long,
+        @Header("Authorization") token: String
+    ): Response<List<AvaliacaoDTO>>
+
+    @PATCH("/users/imagem-perfil/{idUser}")
+    suspend fun patchUserImage(
+        @Path("idUser") idUser: Long,
+        @Body imagemPerfil: ImagemPerfil,
+    ): Response<ImagemPerfil>
 
     @POST("/avaliacoes/{empresaId}/{usuarioId}")
     suspend fun postAvaliacao(
@@ -37,4 +53,19 @@ interface ApiPridePoints {
         @Path("empresaId") empresaId: Long,
         @Path("usuarioId") usuarioId: Long
     ): Response<Avaliacao>
+
+    @POST("/users/login")
+    suspend fun login(@Body credenciais: Credenciais): Response<UsuarioToken>
+
+
+    @POST("/users")
+    suspend fun cadastrarUsuario(@Body usuarioCadastro: UsuarioCadastro): Response<UsuarioToken>
+
+    @GET("/users/imagem-perfil/{idUser}")
+    suspend fun getUserImage(
+        @Path("idUser") idUser: Long,
+        @Header("Authorization") token: String
+    ): Response<ImagemPerfil>
+
+
 }

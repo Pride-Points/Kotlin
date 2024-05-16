@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.telasInscricao
+package scholl.sptech.pridepoints.front.telasInscricao
 
 import android.content.Intent
 import android.os.Bundle
@@ -157,10 +157,10 @@ fun PridePointsWelcomeScreen(backgroundColor: Long = 0xFF4200A1) {
 
         }
 
-            Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
-        }
     }
+}
 
 
 @Preview(showBackground = true, backgroundColor = 0xFF4200A1)

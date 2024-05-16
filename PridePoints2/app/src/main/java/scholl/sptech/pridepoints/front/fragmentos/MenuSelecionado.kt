@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.fragmentos
+package scholl.sptech.pridepoints.front.fragmentos
 
 data class MenuItem(
     val naoSelecionado: Int,

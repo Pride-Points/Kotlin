@@ -1,16 +1,20 @@
-package scholl.sptech.pridepoints.avaliacoes
+package scholl.sptech.pridepoints.classes.ViewModel
 
 import android.content.Context
+import android.net.http.HttpException
 import android.util.Log
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import scholl.sptech.pridepoints.api.RetrofitService
+import scholl.sptech.pridepoints.classes.entidades.Avaliacao
+import scholl.sptech.pridepoints.classes.entidades.AvaliacaoDTO
 
 class AvaliacaoViewModel : ViewModel() {
 
@@ -118,4 +122,30 @@ class AvaliacaoViewModel : ViewModel() {
             }
         }
     }
-}
+
+
+        private val _avaliacoes = MutableLiveData<List<AvaliacaoDTO>>()
+        val avaliacoesDTO: LiveData<List<AvaliacaoDTO>> = _avaliacoes
+
+        fun fetchAvaliacoesUsuario(idUsuario: Long, token: String) {
+            viewModelScope.launch {
+                try {
+                    val apiService = RetrofitService.getApiPridePointsService()
+                    val response = apiService.getAvaliacoesUsuario(idUsuario, "Bearer $token")
+                    if (response.isSuccessful) {
+                        _avaliacoes.value = response.body()
+                    } else {
+                        _avaliacoes.value = emptyList()
+                    }
+                } catch (e: Exception) {
+                    _avaliacoes.value = emptyList()
+                }
+            }
+        }
+
+        fun removerAvaliacao(idAvaliacao: Long) {
+            // Implementação para remover a avaliação
+        }
+    }
+
+

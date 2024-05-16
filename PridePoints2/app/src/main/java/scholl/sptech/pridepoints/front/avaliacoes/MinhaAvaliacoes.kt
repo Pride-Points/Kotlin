@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -27,6 +26,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -48,8 +48,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import scholl.sptech.pridepoints.R
-import scholl.sptech.pridepoints.avaliacoes.Avaliacao
-import scholl.sptech.pridepoints.avaliacoes.AvaliacaoViewModel
+import scholl.sptech.pridepoints.classes.entidades.Avaliacao
+import scholl.sptech.pridepoints.classes.ViewModel.AvaliacaoViewModel
+import scholl.sptech.pridepoints.classes.ViewModel.SalvarLogin
 
 @Composable
 fun ModalDeletar(
@@ -127,29 +128,40 @@ fun ModalEditar(
     }
 }
 
+
 @Composable
 fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel()) {
+    val context = LocalContext.current
+    val salvarLogin = SalvarLogin(context)
+    val userToken = salvarLogin.getUserToken()
+    val userId = userToken?.userId ?: -1L
+    val token = userToken?.token ?: ""
 
+    // Buscar as avaliações do usuário
+    LaunchedEffect(userId, token) {
+        if (userId != -1L && token.isNotEmpty()) {
+            AvaliacaoViewModel.fetchAvaliacoesUsuario(userId, token)
+        }
+    }
 
-    val avals = AvaliacaoViewModel.avaliacoes.observeAsState().value.orEmpty()
-
+    val avals by AvaliacaoViewModel.avaliacoes.observeAsState(emptyList())
 
     Column {
         if (avals.isEmpty()) {
             Box(
-                contentAlignment = Alignment.Center, // Assegura centralização do conteúdo no Box
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .height(500.dp) // Define altura do Box
-                    .fillMaxWidth() // Assegura que o Box ocupe a largura total do seu contêiner pai
+                    .height(500.dp)
+                    .fillMaxWidth()
             ) {
                 Text(
                     "Faça sua primeira avaliação!",
                     style = TextStyle(
                         fontSize = 20.sp,
                         color = Color.Black,
-                        textAlign = TextAlign.Center // Alinha o texto ao centro horizontalmente
+                        textAlign = TextAlign.Center
                     ),
-                    modifier = Modifier.fillMaxWidth() // Assegura que o Text ocupe a largura total do Box
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         } else {
@@ -161,7 +173,7 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
             ) {
                 Spacer(modifier = Modifier.width(30.dp))
                 Text(
-                    text = "Suas avaliações!",
+                    text = "Suas avaliações especiais!",
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 23.sp
@@ -170,30 +182,18 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
             }
 
             LazyColumn(modifier = Modifier
-                .heightIn(min = 100.dp, max = 550.dp)  // Define a altura mínima e máxima para o LazyColumn
+                .heightIn(min = 100.dp, max = 550.dp)
                 .fillMaxWidth()) {
                 items(items = avals) { aval ->
-                    var isExpanded: Boolean by remember {
-                        mutableStateOf(false)
-                    }
-
-                    var showDialogEdit by remember {
-                        mutableStateOf(false)
-                    }
-
-                    var showDialogDelete by remember {
-                        mutableStateOf(false)
-                    }
-
-                    var selectedItem by remember {
-                        mutableStateOf<Avaliacao?>(null)
-                    }
+                    var isExpanded by remember { mutableStateOf(false) }
+                    var showDialogEdit by remember { mutableStateOf(false) }
+                    var showDialogDelete by remember { mutableStateOf(false) }
+                    var selectedItem by remember { mutableStateOf<Avaliacao?>(null) }
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        // Adicionando sombra fora do Box
                         Box(
                             modifier = Modifier
                                 .padding(10.dp)
@@ -210,8 +210,6 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                 Column(
                                     verticalArrangement = Arrangement.spacedBy(4.dp)
                                 ) {
-                                    val contexto = LocalContext.current
-
                                     Row(modifier = Modifier.fillMaxWidth()) {
                                         Text(
                                             text = "${aval.loja}",
@@ -244,23 +242,16 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                         }
                                     }
 
-                                    //Ver mais e limitação de caracteres
                                     val maxPreviewLength = 50
-                                    val textToShow =
-                                        if (isExpanded || aval.comentario!!.length <= maxPreviewLength) {
-                                            aval.comentario
-                                        } else {
-                                            "${aval.comentario.take(maxPreviewLength)}... "
-                                        }
+                                    val textToShow = if (isExpanded || aval.comentario!!.length <= maxPreviewLength) {
+                                        aval.comentario
+                                    } else {
+                                        "${aval.comentario.take(maxPreviewLength)}... "
+                                    }
                                     val annotatedText = buildAnnotatedString {
                                         append(textToShow)
-                                        if (!isExpanded && aval.comentario!!.length > maxPreviewLength) {
-                                            withStyle(
-                                                style = SpanStyle(
-                                                    color = Color(0xFF5800D6),
-                                                    fontWeight = FontWeight.Bold
-                                                )
-                                            ) {
+                                        if (!isExpanded && aval.comentario?.length > maxPreviewLength) {
+                                            withStyle(style = SpanStyle(color = Color(0xFF5800D6), fontWeight = FontWeight.Bold)) {
                                                 append("Ver mais")
                                             }
                                         }
@@ -269,7 +260,7 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                     ClickableText(
                                         text = annotatedText,
                                         onClick = { offset ->
-                                            if (offset in textToShow!!.length until annotatedText.length) {
+                                            if (offset in textToShow.length until annotatedText.length) {
                                                 isExpanded = true
                                             }
                                         },
@@ -282,21 +273,11 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                             .fillMaxWidth()
                                             .padding(8.dp)
                                     ) {
-
-                                        //TERCEIRA SPRINT DISCUSSÃO
-                                        /* Text(
-                                             text = "${aval.sentimento}",
-                                             color = Color(0xFF5800D6),
-                                             fontWeight = FontWeight.Bold,
-                                             fontSize = 15.sp
-                                         )*/
-
-                                        //Ver menos
                                         if (isExpanded) {
                                             Button(
                                                 onClick = { isExpanded = false },
                                                 colors = ButtonDefaults.buttonColors(Color.Transparent),
-                                                contentPadding = PaddingValues(0.dp), // Remove padding
+                                                contentPadding = PaddingValues(0.dp),
                                                 elevation = ButtonDefaults.buttonElevation(
                                                     defaultElevation = 0.dp,
                                                     pressedElevation = 0.dp,
@@ -306,7 +287,6 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                             ) {
                                                 Text("Ver menos", color = Color(0xFF5800D6))
                                             }
-
                                         }
 
                                         Spacer(modifier = Modifier.weight(1f))
@@ -321,7 +301,6 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                                     selectedItem = aval
                                                 }
                                         )
-
 
                                         Image(
                                             painter = painterResource(id = R.mipmap.linha_avaliacao),
@@ -338,7 +317,6 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                                     showDialogDelete = true
                                                     selectedItem = aval
                                                 }
-
                                         )
 
                                         if (showDialogDelete) {
@@ -361,14 +339,11 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                                 onConfirmDialog = {
                                                     selectedItem?.let {
                                                         val telaEdit = Intent(
-                                                            contexto,
+                                                            context,
                                                             TelaEdicao::class.java
-                                                        )  // Usar 'it.id' supondo que cada avaliação tem um ID
-                                                        telaEdit.putExtra(
-                                                            "itemSelecionado",
-                                                            selectedItem
                                                         )
-                                                        contexto.startActivity(telaEdit)
+                                                        telaEdit.putExtra("itemSelecionado", selectedItem)
+                                                        context.startActivity(telaEdit)
                                                     }
                                                 }
                                             )

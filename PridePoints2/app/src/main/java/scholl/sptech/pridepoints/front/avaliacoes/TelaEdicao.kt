@@ -43,8 +43,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import scholl.sptech.pridepoints.R
-import scholl.sptech.pridepoints.avaliacoes.Avaliacao
-import scholl.sptech.pridepoints.avaliacoes.AvaliacaoViewModel
+import scholl.sptech.pridepoints.classes.entidades.Avaliacao
+import scholl.sptech.pridepoints.classes.ViewModel.AvaliacaoViewModel
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 
 class TelaEdicao : ComponentActivity() {

@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.eventosregiao
+package scholl.sptech.pridepoints.front.eventosregiao
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -42,6 +42,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
+import scholl.sptech.pridepoints.classes.ViewModel.EventoViewModel
+import scholl.sptech.pridepoints.classes.entidades.EventosRegiao
 
 
 @Composable

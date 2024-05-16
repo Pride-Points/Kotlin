@@ -1,10 +1,11 @@
-package scholl.sptech.pridepoints
+package scholl.sptech.pridepoints.front
 
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,22 +33,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import scholl.sptech.pridepoints.fragmentos.HomeScreen
-import scholl.sptech.pridepoints.fragmentos.MainFragmentos
-import scholl.sptech.pridepoints.fragmentos.MapScreen
-import scholl.sptech.pridepoints.fragmentos.MenuItem
-import scholl.sptech.pridepoints.fragmentos.MyReviewScreen
-import scholl.sptech.pridepoints.fragmentos.ProfileScreen
+import scholl.sptech.pridepoints.R
+import scholl.sptech.pridepoints.classes.ViewModel.PerfilViewModel
+import scholl.sptech.pridepoints.classes.ViewModel.SalvarLogin
+import scholl.sptech.pridepoints.front.fragmentos.HomeScreen
+import scholl.sptech.pridepoints.front.fragmentos.MainFragmentos
+import scholl.sptech.pridepoints.front.fragmentos.MapScreen
+import scholl.sptech.pridepoints.front.fragmentos.MenuItem
+import scholl.sptech.pridepoints.front.fragmentos.MyReviewScreen
+import scholl.sptech.pridepoints.front.fragmentos.ProfileScreen
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 
 
-class MainActivity : ComponentActivity() {
+class TelaInicialUsuario : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -88,6 +94,8 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
                 painter = painterResource(id = R.mipmap.logo_header),
                 contentDescription = "Bandeira PP",
                 modifier = Modifier.size(25.dp)
+                    .clickable { navController.navigate("home") }
+
             )
 
             //Será buscado pela API?
@@ -126,6 +134,9 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
             }
             composable("PROFILE") {
                 ProfileScreen()
+            }
+            composable("home") {
+                HomeScreen()
             }
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -177,18 +188,24 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun UserImage() {
-    val imageUrl = remember { mutableStateOf("") }
+fun UserImage(perfilViewModel: PerfilViewModel = viewModel()) {
     val context = LocalContext.current
+    val salvarLogin = SalvarLogin(context)
+    val userToken = salvarLogin.getUserToken()
+    val userId = userToken?.userId ?: -1L
+    val token = userToken?.token ?: ""
 
-    // Carregar a URL da imagem de perfil
-    DisposableEffect(Unit) {
-        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-        imageUrl.value = sharedPreferences.getString("USER_IMAGE_URL", "") ?: ""
-        onDispose { }
+    // Buscar a URL da imagem de perfil
+    LaunchedEffect(userId, token) {
+        if (userId != -1L && token.isNotEmpty()) {
+            perfilViewModel.fetchUserImage(userId, token)
+        }
     }
 
-    if (imageUrl.value.isNotEmpty()) {
+    // Observar o resultado da URL da imagem
+    val imageUrl = perfilViewModel.imageResult.observeAsState()
+
+    if (imageUrl.value?.isNotEmpty() == true) {
         // Usar biblioteca para carregar a imagem da URL, como Coil ou Glide
         Image(
             painter = rememberAsyncImagePainter(imageUrl.value),

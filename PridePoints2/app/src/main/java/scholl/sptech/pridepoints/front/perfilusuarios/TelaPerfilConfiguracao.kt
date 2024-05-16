@@ -1,5 +1,6 @@
-package scholl.sptech.pridepoints.perfilusuarios
+package scholl.sptech.pridepoints.front.perfilusuarios
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,11 +19,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import scholl.sptech.pridepoints.classes.ViewModel.PerfilViewModel
+import scholl.sptech.pridepoints.classes.ViewModel.SalvarLogin
 
 
 @Composable
-fun TelaPerfil(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel = PerfilViewModel()) {
+fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel = PerfilViewModel()) {
     val context = LocalContext.current
+    val salvarLogin = SalvarLogin(context)
+    val userToken = salvarLogin.getUserToken()
+    val userId = userToken?.userId ?: -1L
+    val tokenUser = userToken?.token ?: "Token não encontrado"
+
+    // Adicionando Log para verificar o ID do usuário
+    Log.d("TelaPerfilConfiguracao", "User ID: $userId")
+    println("User ID: $userId")  // Adicionando um print
+
 
     Column(
         modifier = Modifier
@@ -38,7 +50,7 @@ fun TelaPerfil(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel =
                 text = "Defina sua imagem de perfil",
                 modifier = Modifier
                     .padding(bottom = 16.dp),
-                    fontSize = 24.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Medium
             )
         }
@@ -58,7 +70,7 @@ fun TelaPerfil(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel =
                     painter = painterResource(id = R.mipmap.descubra),
                     contentDescription = null,
                     modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(getUserIdFromPreferences(context), "https://unsplash.com/pt-br/fotografias/uma-pessoa-segurando-uma-bandeira-do-arco-iris-na-mao-kqfA8AMt4tI", context ) }
+                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://unsplash.com/pt-br/fotografias/uma-pessoa-segurando-uma-bandeira-do-arco-iris-na-mao-kqfA8AMt4tI", context ) }
                 )
                 Text(
                     text = "Encontre-se",
@@ -79,7 +91,7 @@ fun TelaPerfil(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel =
                     painter = painterResource(id = R.mipmap.orgulho),
                     contentDescription = null,
                     modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(getUserIdFromPreferences(context), "https://empoderadxs.com.br/wp-content/uploads/2020/08/progress-pride-flag.jpg", context ) }
+                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://empoderadxs.com.br/wp-content/uploads/2020/08/progress-pride-flag.jpg", context ) }
                 )
                 Text(
                     text = "Orgulho",
@@ -104,7 +116,7 @@ fun TelaPerfil(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel =
                     painter = painterResource(id = R.mipmap.lesbica),
                     contentDescription = null,
                     modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(getUserIdFromPreferences(context), "https://static.wikia.nocookie.net/identidades/images/f/fd/Bandeira_l%C3%A9sbica_sunset.png/revision/latest?cb=20220810191743&path-prefix=pt-br", context ) }
+                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://static.wikia.nocookie.net/identidades/images/f/fd/Bandeira_l%C3%A9sbica_sunset.png/revision/latest?cb=20220810191743&path-prefix=pt-br", context ) }
                 )
                 Text(
                     text = "Lésbisca",
@@ -125,7 +137,7 @@ fun TelaPerfil(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel =
                     painter = painterResource(id = R.mipmap.gay),
                     contentDescription = null,
                     modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(getUserIdFromPreferences(context), "https://pbs.twimg.com/media/EZbWtuXXkAE4bS_.jpg", context ) }
+                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://pbs.twimg.com/media/EZbWtuXXkAE4bS_.jpg", context ) }
                 )
                 Text(
                     text = "Gay",
@@ -150,7 +162,7 @@ fun TelaPerfil(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel =
                     painter = painterResource(id = R.mipmap.bissexual),
                     contentDescription = null,
                     modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(getUserIdFromPreferences(context), "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bisexual_Pride_Flag.svg/300px-Bisexual_Pride_Flag.svg.png", context ) }
+                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bisexual_Pride_Flag.svg/300px-Bisexual_Pride_Flag.svg.png", context ) }
                 )
                 Text(
                     text = "Bissexual",
@@ -171,7 +183,7 @@ fun TelaPerfil(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel =
                     painter = painterResource(id = R.mipmap.transexual),
                     contentDescription = null,
                     modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(getUserIdFromPreferences(context), "https://www.doistercos.com.br/wp-content/uploads/2023/11/bandeiratrans.jpg", context ) }
+                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://www.doistercos.com.br/wp-content/uploads/2023/11/bandeiratrans.jpg", context ) }
                 )
                 Text(
                     text = "Transexual",
@@ -219,16 +231,12 @@ fun TelaPerfil(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel =
     }
 }
 
-fun getUserIdFromPreferences(context: Context): Long {
-    val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-    val userIdString = sharedPreferences.getString("USER_ID", "")
-    return userIdString?.toLongOrNull() ?: -1L  // Retorna -1 se não for possível converter
-}
+
 
 @Preview(showBackground = true)
 @Composable
 fun TelaPerfilPreview() {
     PridePointsTheme {
-        TelaPerfil()
+        TelaPerfilConfiguracao()
     }
 }

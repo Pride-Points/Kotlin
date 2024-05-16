@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.eventosRegiao
+package scholl.sptech.pridepoints.eventosregiao
 
 import android.util.Log
 import androidx.compose.runtime.snapshots.SnapshotStateList

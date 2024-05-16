@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.perfilUsuario
+package scholl.sptech.pridepoints.avaliacoes
 
 
 import androidx.compose.foundation.Image

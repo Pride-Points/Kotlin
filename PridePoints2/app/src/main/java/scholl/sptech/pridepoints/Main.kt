@@ -1,5 +1,6 @@
 package scholl.sptech.pridepoints
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,12 +19,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +34,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import scholl.sptech.pridepoints.fragmentos.HomeScreen
 import scholl.sptech.pridepoints.fragmentos.MainFragmentos
 import scholl.sptech.pridepoints.fragmentos.MapScreen
@@ -94,11 +99,7 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
             TextButton(onClick = {
                 navController.navigate("PROFILE")
             }) {
-                Image(
-                    painter = painterResource(id = R.mipmap.avatar),
-                    contentDescription = "Bandeira PP",
-                    modifier = Modifier.size(25.dp)
-                )
+                UserImage()
             }
             Spacer(modifier = Modifier.weight(0.5f))
 
@@ -172,6 +173,35 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
 
 
         }
+    }
+}
+
+@Composable
+fun UserImage() {
+    val imageUrl = remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    // Carregar a URL da imagem de perfil
+    DisposableEffect(Unit) {
+        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        imageUrl.value = sharedPreferences.getString("USER_IMAGE_URL", "") ?: ""
+        onDispose { }
+    }
+
+    if (imageUrl.value.isNotEmpty()) {
+        // Usar biblioteca para carregar a imagem da URL, como Coil ou Glide
+        Image(
+            painter = rememberAsyncImagePainter(imageUrl.value),
+            contentDescription = "Imagem de perfil",
+            modifier = Modifier.size(25.dp)
+        )
+    } else {
+        // Imagem padrão se não houver URL salva
+        Image(
+            painter = painterResource(R.mipmap.avatar),
+            contentDescription = "Bandeira PP",
+            modifier = Modifier.size(25.dp)
+        )
     }
 }
 

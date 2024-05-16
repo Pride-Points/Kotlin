@@ -13,8 +13,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import scholl.sptech.pridepoints.eventosRegiao.HomeEventos
+import scholl.sptech.pridepoints.eventosregiao.HomeEventos
 import scholl.sptech.pridepoints.menuitens.avaliacoes.MinhasAvaliacoes
+import scholl.sptech.pridepoints.perfilusuarios.TelaPerfil
 
 @Composable
 fun HomeScreen(){
@@ -51,6 +52,6 @@ fun MyReviewScreen(){
 //Apagar após a tela de perfil ser feita
 @Composable
 fun ProfileScreen(){
-    Text("Aqui precisa ser o perfil")
+    TelaPerfil()
 }
 

@@ -1,5 +1,6 @@
 package scholl.sptech.pridepoints.telasInscricao
 
+import android.content.Context
 import android.content.Intent
 import retrofit2.Call
 import retrofit2.Callback
@@ -70,6 +71,12 @@ class Login : ComponentActivity() {
         networkService.performLogin(email, senha).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
+                    val userId = response.body()?.id.toString() ?: ""
+                    val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().apply {
+                        putString("USER_ID", userId)
+                        apply()
+                    }
                     Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(context, "Erro de login!", Toast.LENGTH_LONG).show()

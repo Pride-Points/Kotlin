@@ -1,15 +1,19 @@
 package scholl.sptech.pridepoints.avaliacoes
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import scholl.sptech.pridepoints.api.RetrofitService
 
 class AvaliacaoViewModel : ViewModel() {
+
 
     val mockAvaliacoes = SnapshotStateList<Avaliacao>().apply {
         add(Avaliacao(id = 1, loja = "Loja A", comentario = "Ótimo serviço!", sentimento = "positivo", estrelas = 5))
@@ -44,6 +48,39 @@ class AvaliacaoViewModel : ViewModel() {
                 erroApi.postValue(e.message)
             }
         }
+    }
+
+    fun criarAvaliacao(avaliacao: Avaliacao, idUser: Long, idEmpresa: Long, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Presume-se que 'api' é uma instância de um cliente Retrofit configurado
+                val response = api.postAvaliacao(avaliacao, idUser, idEmpresa)  // Envia o objeto 'avaliacao' para a API
+                if (response.isSuccessful) {
+                    // Operações em caso de sucesso, como atualizar a UI ou lista de dados
+                    withContext(Dispatchers.Main) {
+                        onSuccess()
+                    }
+                } else {
+                    // Trata erro de resposta não bem-sucedida
+                    Log.e("api", "Erro ao criar avaliação")
+                    withContext(Dispatchers.Main) {
+                        onError(response.errorBody()?.string() ?: "Erro desconhecido")
+                    }
+                }
+            } catch (e: Exception) {
+                // Trata exceções de chamada de rede ou serialização
+                Log.e("api", "Exceção ao criar avaliação: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    onError(e.message ?: "Erro desconhecido")
+                }
+            }
+        }
+    }
+
+    fun getUserIdFromPreferences(context: Context): Long {
+        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val userIdString = sharedPreferences.getString("USER_ID", "")
+        return userIdString?.toLongOrNull() ?: -1L  // Retorna -1 se não for possível converter
     }
 
     fun removerAvaliacao(idAvaliacao: Int) {

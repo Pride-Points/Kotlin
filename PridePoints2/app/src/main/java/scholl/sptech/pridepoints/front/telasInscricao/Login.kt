@@ -1,9 +1,6 @@
 package scholl.sptech.pridepoints.front.telasInscricao
 
 import android.content.Intent
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity

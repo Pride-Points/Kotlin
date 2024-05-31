@@ -9,62 +9,51 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import scholl.sptech.pridepoints.api.RetrofitService
 import scholl.sptech.pridepoints.classes.entidades.ImagemPerfil
+import scholl.sptech.pridepoints.storage.DataStoreManager
 import kotlin.math.log
 
-class PerfilViewModel: ViewModel() {
+class PerfilViewModel(private val dataStoreManager: DataStoreManager): ViewModel() {
 
 
     val api = RetrofitService.getApiPridePointsService()
     val erroApi = MutableLiveData("")
 
 
-    fun postUserProfile(idUser: Long, userToken: String, profileData: String, context: Context) {
+
+    fun postUserProfile(profileData: String) {
         CoroutineScope(Dispatchers.IO).launch {
+
+            val token = dataStoreManager.token.first()
+            val userId = dataStoreManager.userId.first()
+
             try {
                 // Assume postUserProfile is a method in your Retrofit interface
-                val profileDataObj = ImagemPerfil(profileData)
-                val response = api.patchUserImage(idUser,profileDataObj)
-                print(response)
-                if (response.isSuccessful) {
-                    val userProfile = response.body()
-                    val imageUrl = userProfile?.imgUser
 
-                    val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-                    sharedPreferences.edit().apply {
-                        putString("USER_IMAGE_URL", imageUrl)
-                        apply()
+                if (token != null && userId != null) {
+                    val profileDataObj = ImagemPerfil(profileData)
+                    val response = api.patchUserImage(userId, profileDataObj)
+                    print(response)
+                    if (response.isSuccessful) {
+                        val userProfile = response.body()
+                        val imageUrl = userProfile?.imgUser
+                        // Salvar a URL da imagem no DataStore
+                        if (imageUrl != null) {
+                            dataStoreManager.saveUserImageUrl(imageUrl)
+                        }
+                    } else {
+                        Log.e("api", "erro no post")
+                        erroApi.postValue(response.errorBody()?.string() ?: "Unknown error")
                     }
-                } else {
-                    Log.e("api", "erro no post")
-                    erroApi.postValue(response.errorBody()?.string() ?: "Unknown error")
                 }
             } catch (e: Exception) {
                 Log.e("api", "Exception in post! ${e.message}")
                 erroApi.postValue(e.message ?: "Unknown error")
             }
         }
-
-    }
-    private val _imageResult = MutableLiveData<String?>()
-    val imageResult: LiveData<String?> = _imageResult
-
-    fun fetchUserImage(idUser: Long, token: String) {
-        viewModelScope.launch {
-            try {
-                val apiService = RetrofitService.getApiPridePointsService()
-                val response = apiService.getUserImage(idUser, "Bearer $token")
-                if (response.isSuccessful) {
-                    _imageResult.value = response.body()?.imgUser
-                } else {
-                    _imageResult.value = null
-                }
-            } catch (e: Exception) {
-                _imageResult.value = null
-            }
         }
     }
-}
 

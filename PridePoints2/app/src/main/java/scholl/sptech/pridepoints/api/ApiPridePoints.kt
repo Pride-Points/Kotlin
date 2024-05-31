@@ -41,7 +41,10 @@ interface ApiPridePoints {
         @Header("Authorization") token: String
     ): Response<List<AvaliacaoDTO>>
 
-    @PATCH("/users/imagem-perfil/{idUser}")
+    @GET("/users/imagem-perfil/{idUser}")
+    suspend fun getUserimage(@Path("iduser") idUser: Long): Response<ImagemPerfil>
+
+    @POST("/users/imagem-perfil/{idUser}")
     suspend fun patchUserImage(
         @Path("idUser") idUser: Long,
         @Body imagemPerfil: ImagemPerfil,

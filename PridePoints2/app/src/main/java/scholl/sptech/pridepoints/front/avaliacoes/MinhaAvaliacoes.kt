@@ -243,14 +243,16 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                     }
 
                                     val maxPreviewLength = 50
-                                    val textToShow = if (isExpanded || aval.comentario!!.length <= maxPreviewLength) {
-                                        aval.comentario
+// Manipulação segura de string nula com valor padrão se for nulo
+                                    val comentario = aval.comentario ?: "Nenhum comentário disponível"
+                                    val textToShow = if (isExpanded || comentario.length <= maxPreviewLength) {
+                                        comentario
                                     } else {
-                                        "${aval.comentario.take(maxPreviewLength)}... "
+                                        "${comentario.take(maxPreviewLength)}... "
                                     }
                                     val annotatedText = buildAnnotatedString {
                                         append(textToShow)
-                                        if (!isExpanded && aval.comentario?.length > maxPreviewLength) {
+                                        if (!isExpanded && comentario.length > maxPreviewLength) {
                                             withStyle(style = SpanStyle(color = Color(0xFF5800D6), fontWeight = FontWeight.Bold)) {
                                                 append("Ver mais")
                                             }

@@ -1,0 +1,9 @@
+<resources>
+  <string name="pridepoints_app_name" translatable="false">pridepoints Demo</string>
+  <string name="google_maps_key">AIzaSyB7SCZ7bfYVEJCQEEtqOd_6r0zkVevkbJU</string>
+  <string name="launch_map_picker" translatable="false">LAUNCH MAP LOCATION PICKER ACTIVITY</string>
+  <string name="launch_legacy_map_picker" translatable="false">LAUNCH LEGACY MAP LOCATION ACTIVITY</string>
+  <string name="launch_map_picker_with_pois" translatable="false">LAUNCH MAP WITH POIS</string>
+  <string name="launch_map_picker_with_style" translatable="false">LAUNCH MAP WITH STYLE</string>
+  <string name="pridepoints_lib_version" translatable="false">version 11.1.4</string>
+</resources>

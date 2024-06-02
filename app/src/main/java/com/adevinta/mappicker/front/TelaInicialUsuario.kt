@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -49,8 +50,6 @@ import com.adevinta.mappicker.front.fragmentos.MyReviewScreen
 import com.adevinta.mappicker.front.fragmentos.ProfileScreen
 import com.adevinta.mappicker.ui.theme.pridepointsTheme
 import com.adevinta.mappicker.R
-
-
 
 class TelaInicialUsuario : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +92,7 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.weight(0.5f))
             Image(
                 painter = painterResource(id = R.mipmap.logo_header),
-                contentDescription = "Bandeira PP",
+                contentDescription = stringResource(R.string.content_description_logo_header),
                 modifier = Modifier
                     .size(25.dp)
                     .clickable { navController.navigate("home") }
@@ -102,7 +101,7 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
 
             //Será buscado pela API?
             Spacer(modifier = Modifier.weight(2f))
-            Text(text = "Av. Paulista", Modifier.padding(vertical = 15.dp))
+            Text(text = stringResource(R.string.text_av_paulista), Modifier.padding(vertical = 15.dp))
             Spacer(modifier = Modifier.weight(1.5f))
 
             //AQUI PRECISA MANDAR PARA A TELA DE PERFIL
@@ -112,9 +111,8 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
                 UserImage()
             }
             Spacer(modifier = Modifier.weight(0.5f))
-
-
         }
+
         Divider(
             color = Color(android.graphics.Color.parseColor("#5800D6")),
             thickness = 1.dp
@@ -141,12 +139,11 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
                 HomeScreen()
             }
         }
+
         Spacer(modifier = Modifier.weight(1f))
 
         //linha
         Divider(color = Color.Gray, thickness = 1.dp)
-
-
 
         Row(
             modifier = Modifier
@@ -154,20 +151,6 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            /*MainFragmentos.values().forEach {
-
-                TextButton(modifier = Modifier.weight(1f),
-                    onClick = { navController.navigate(it.name)}
-                ) {
-                    // importar do androidx.compose...
-                     Image(
-                         painter = painterResource(id = it.imagem),
-                         contentDescription = it.descricao,
-                         modifier = Modifier.size(40.dp))
-                }
-
-            }*/
-
             menuItems.forEachIndexed { index, item ->
                 TextButton(
                     modifier = Modifier.weight(1f),
@@ -183,8 +166,6 @@ fun Tela(navController: NavHostController, modifier: Modifier = Modifier) {
                     )
                 }
             }
-
-
         }
     }
 }
@@ -208,7 +189,7 @@ fun UserImage(loginViewModel: LoginViewModel = LoginViewModel()) {
     // Exibir a imagem
     Image(
         painter = imagePainter,
-        contentDescription = "Imagem de perfil",
+        contentDescription = stringResource(R.string.content_description_user_image),
         modifier = Modifier
             .size(50.dp)  // Define o tamanho da imagem (ajuste conforme necessário)
             .clip(CircleShape)  // Corta a imagem em forma de círculo

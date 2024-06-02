@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -66,10 +67,6 @@ class Cadastro : ComponentActivity() {
     }
 }
 
-
-
-
-
 @Composable
 fun TelaCadastro(cadastroViewModel: CadastroViewModel = viewModel()) {
     val context = LocalContext.current
@@ -94,20 +91,20 @@ fun TelaCadastro(cadastroViewModel: CadastroViewModel = viewModel()) {
                 ) {
                     if (etapaAtual == 1) {
                         TextoEtapaCadastro(
-                            titulo = "Aproveite!",
-                            descricao = "Faça parte do projeto\ne aproveite benefícios\nexclusivos!"
+                            titulo = stringResource(R.string.text_aproveite),
+                            descricao = stringResource(R.string.text_aproveite_descricao)
                         )
                     } else if (etapaAtual == 2) {
                         TextoEtapaCadastro(
-                            titulo = "Estamos quase lá!",
-                            descricao = "Você está a um passo\nde desfrutar dos\nbenefícios deste\nprojeto!"
+                            titulo = stringResource(R.string.text_estamos_quase_la),
+                            descricao = stringResource(R.string.text_estamos_quase_la_descricao)
                         )
                     }
                 }
 
                 Image(
                     painter = painterResource(id = R.mipmap.persona), // Substitua pelo ID de recurso correto
-                    contentDescription = "Personagem com smartphone",
+                    contentDescription = stringResource(R.string.content_description_persona),
                     modifier = Modifier.width(160.dp).height(185.dp)
                 )
             }
@@ -128,7 +125,7 @@ fun TelaCadastro(cadastroViewModel: CadastroViewModel = viewModel()) {
                 ) {
                     Spacer(modifier = Modifier.height(50.dp))
                     Text(
-                        text = "Seja membro!",
+                        text = stringResource(R.string.text_seja_membro),
                         fontSize = 30.sp,
                         color = Color(0xFF4200A1),
                         fontWeight = FontWeight.Bold,
@@ -151,7 +148,7 @@ fun TelaCadastro(cadastroViewModel: CadastroViewModel = viewModel()) {
                                 usuarioInfo = usuarioInfo.copy(cpf = cpf, senha = senha)
                                 cadastroViewModel.cadastrarUsuario(usuarioInfo)
                             } else {
-                                Toast.makeText(context, "As senhas não coincidem", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, "As senhas não batem", Toast.LENGTH_LONG).show()
                             }
                         }
                     }
@@ -168,9 +165,9 @@ fun TelaCadastro(cadastroViewModel: CadastroViewModel = viewModel()) {
 
                     Spacer(modifier = Modifier.height(10.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                        Text(text = AnnotatedString("Já possui uma conta ? "))
+                        Text(text = stringResource(R.string.text_ja_possui_conta))
                         ClickableText(
-                            text = AnnotatedString("Faça Login"),
+                            text = AnnotatedString(stringResource(R.string.text_faca_login)),
                             style = TextStyle(
                                 color = Color(0xFF2C73EB), // Cor azul para o texto clicável
                                 fontSize = 16.sp
@@ -186,6 +183,7 @@ fun TelaCadastro(cadastroViewModel: CadastroViewModel = viewModel()) {
         }
     }
 }
+
 @Composable
 fun TextoEtapaCadastro(titulo: String, descricao: String) {
     Text(
@@ -201,6 +199,7 @@ fun TextoEtapaCadastro(titulo: String, descricao: String) {
         fontSize = 20.sp
     )
 }
+
 @Composable
 fun CadastroEtapaUm(onProximo: (String, String, String, String) -> Unit) {
     var nome by remember { mutableStateOf("") }
@@ -212,7 +211,7 @@ fun CadastroEtapaUm(onProximo: (String, String, String, String) -> Unit) {
         OutlinedTextField(
             value = nome,
             onValueChange = { nome = it },
-            label = { Text("Insira seu nome") },
+            label = { Text(stringResource(R.string.text_insira_nome)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(10.dp)) // Espaço no topo
@@ -220,21 +219,21 @@ fun CadastroEtapaUm(onProximo: (String, String, String, String) -> Unit) {
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Insira seu e-mail") },
+            label = { Text(stringResource(R.string.text_insira_email)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(10.dp)) // Espaço no topo
         OutlinedTextField(
             value = genero,
             onValueChange = { genero = it },
-            label = { Text("Gênero") },
+            label = { Text(stringResource(R.string.text_genero)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(10.dp)) // Espaço no topo
         OutlinedTextField(
             value = orientacaoSexual,
             onValueChange = { orientacaoSexual = it },
-            label = { Text("Orientação Sexual") },
+            label = { Text(stringResource(R.string.text_orientacao_sexual)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(20.dp)) // Espaço no topo
@@ -246,11 +245,10 @@ fun CadastroEtapaUm(onProximo: (String, String, String, String) -> Unit) {
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4200A1) // Cor de fundo do botão
             )) {
-            Text("Próximo")
+            Text(stringResource(R.string.text_proximo))
         }
     }
 }
-
 
 @Composable
 fun CadastroEtapaDois(onCadastroCompleto: (String, String, String) -> Unit) {
@@ -260,19 +258,18 @@ fun CadastroEtapaDois(onCadastroCompleto: (String, String, String) -> Unit) {
     var usuarioInfo = remember { mutableStateOf(UsuarioCadastro()) }
     val context = LocalContext.current
 
-
     Column {
         OutlinedTextField(
             value = cpf,
             onValueChange = { cpf = it },
-            label = { Text("Insira seu CPF") },
+            label = { Text(stringResource(R.string.text_insira_cpf)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(10.dp)) // Espaço no topo
         OutlinedTextField(
             value = senha,
             onValueChange = { senha = it },
-            label = { Text("Insira sua nova senha") },
+            label = { Text(stringResource(R.string.text_insira_senha)) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
@@ -280,7 +277,7 @@ fun CadastroEtapaDois(onCadastroCompleto: (String, String, String) -> Unit) {
         OutlinedTextField(
             value = confirmarSenha,
             onValueChange = { confirmarSenha = it },
-            label = { Text("Confirme a senha") },
+            label = { Text(stringResource(R.string.text_confirme_senha)) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
@@ -288,27 +285,20 @@ fun CadastroEtapaDois(onCadastroCompleto: (String, String, String) -> Unit) {
         Button(onClick = {
             if (senha == confirmarSenha) {
                 onCadastroCompleto(cpf, senha, confirmarSenha)
-
-            }else{
-                Toast.makeText(context, "As senhas não coincidem", Toast.LENGTH_LONG).show()
-
+            } else {
+                Toast.makeText(context,"As senhas não batem", Toast.LENGTH_LONG).show()
             }
-        }
-            ,
+        },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp), // Defina a altura do botão conforme necessário
             shape = RectangleShape, // Faz com que os cantos do botão sejam quadrados
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF4200A1))) {
-            Text("Cadastrar-se")
+            Text(stringResource(R.string.text_cadastrar_se))
         }
     }
 }
-
-
-
-
 
 @Preview(showBackground = true)
 @Composable

@@ -103,6 +103,7 @@
         <option value="Class" />
         <option value="layoutResourceFile" />
         <option value="Kotlin Class" />
+        <option value="valueResourceFile" />
       </list>
     </option>
   </component>
@@ -125,7 +126,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "last_opened_file_path": "C:/Users/dssilva21/Downloads/dudu/ci-cd/pom.xml",
+    "last_opened_file_path": "C:/Users/dssilva21/OneDrive - Stefanini/Desktop/Nova pasta/teste/Kotlin",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2"

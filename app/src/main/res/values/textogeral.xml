@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_logo_header" translatable="false">Bandeira PP</string>
+    <string name="text_av_paulista" translatable="false">Av. Paulista</string>
+    <string name="content_description_user_image" translatable="false">Imagem de perfil</string>
+    <string name="content_description_logo_pride_points" translatable="false">Logo Pride Points</string>
+    <string name="text_navegue" translatable="false">Navegue</string>
+    <string name="text_pelo" translatable="false">pelo</string>
+    <string name="text_mundo_e_encontre" translatable="false">mundo e encontre</string>
+    <string name="text_seu_lugar" translatable="false">seu Lugar!</string>
+    <string name="text_cadastre_se" translatable="false">Cadastre-se</string>
+    <string name="text_ja_possui_conta" translatable="false">Já possui uma conta?</string>
+    <string name="text_faca_login" translatable="false">Faça o Login!</string>
+    <string name="text_seja_membro" translatable="false">Seja membro!</string>
+    <string name="text_aproveite" translatable="false">Aproveite!</string>
+    <string name="text_aproveite_descricao" translatable="false">Faça parte do projeto\ne aproveite benefícios\nexclusivos!</string>
+    <string name="text_estamos_quase_la" translatable="false">Estamos quase lá!</string>
+    <string name="text_estamos_quase_la_descricao" translatable="false">Você está a um passo\nde desfrutar dos\nbenefícios deste\nprojeto!</string>
+    <string name="text_insira_nome" translatable="false">Insira seu nome</string>
+    <string name="text_insira_email" translatable="false">Insira seu e-mail</string>
+    <string name="text_genero" translatable="false">Gênero</string>
+    <string name="text_orientacao_sexual" translatable="false">Orientação Sexual</string>
+    <string name="text_proximo" translatable="false">Próximo</string>
+    <string name="text_insira_cpf" translatable="false">Insira seu CPF</string>
+    <string name="text_insira_senha" translatable="false">Insira sua nova senha</string>
+    <string name="text_confirme_senha" translatable="false">Confirme a senha</string>
+    <string name="text_cadastrar_se" translatable="false">Cadastrar-se</string>
+    <string name="text_senhas_nao_coincidem" translatable="false">As senhas não coincidem</string>
+    <string name="content_description_persona" translatable="false">Personagem com smartphone</string>
+    <string name="text_seja_bem_vindo" translatable="false">Seja bem-vindo!</string>
+    <string name="text_digite_credencial" translatable="false">Digite sua credencial \ne encontre lugares\nseguros e inclusivos.</string>
+    <string name="text_login" translatable="false">Login</string>
+    <string name="text_digite_email" translatable="false">Digite seu E-mail</string>
+    <string name="text_digite_senha" translatable="false">Digite sua senha</string>
+    <string name="text_entrar" translatable="false">Entrar</string>
+    <string name="text_nao_possui_conta" translatable="false">Não possui uma conta?</string>
+    <string name="text_cadastre_se_exclamacao" translatable="false">Cadastre-se!</string>
+    <string name="content_description_vanessa" translatable="false">Vanessa proto persona</string>
+    <string name="text_defina_imagem_perfil" translatable="false">Defina sua imagem de perfil</string>
+    <string name="text_encontre_se" translatable="false">Encontre-se</string>
+    <string name="text_orgulho" translatable="false">Orgulho</string>
+    <string name="text_lesbica" translatable="false">Lésbica</string>
+    <string name="text_gay" translatable="false">Gay</string>
+    <string name="text_bissexual" translatable="false">Bissexual</string>
+    <string name="text_transexual" translatable="false">Transexual</string>
+    <string name="content_description_sair" translatable="false">Left Image</string>
+    <string name="content_description_logo_pride" translatable="false">Right Image</string>
+    <string name="text_nenhum_evento_encontrado" translatable="false">Nenhum evento encontrado</string>
+    <string name="text_sao_paulo" translatable="false">São Paulo</string>
+    <string name="text_ver_mais" translatable="false">Ver mais</string>
+    <string name="text_ver_menos" translatable="false">Ver menos</string>
+</resources>

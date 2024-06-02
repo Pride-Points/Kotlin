@@ -38,14 +38,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import com.adevinta.mappicker.classes.ViewModel.EventoViewModel
 import com.adevinta.mappicker.classes.entidades.EventosRegiao
-
-
+import com.adevinta.mappicker.R
 @Composable
 fun HomeEventos(EventoViewModel: EventoViewModel = EventoViewModel()) {
     val events = EventoViewModel.eventos.observeAsState().value.orEmpty()
@@ -73,7 +73,7 @@ fun HomeEventos(EventoViewModel: EventoViewModel = EventoViewModel()) {
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                Text("Nenhum evento encontrado", style = TextStyle(fontSize = 20.sp, color = Color.Black))
+                Text(stringResource(R.string.text_nenhum_evento_encontrado), style = TextStyle(fontSize = 20.sp, color = Color.Black))
             }
         }
     }
@@ -108,7 +108,7 @@ fun EventCard(evento: EventosRegiao) {
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "São Paulo",
+                    text = stringResource(R.string.text_sao_paulo),
                     modifier = Modifier.padding(end = 10.dp)
                 )
             }
@@ -124,7 +124,7 @@ fun EventCard(evento: EventosRegiao) {
                 append(textToShow)
                 if (!isExpanded && evento.descricaoEvento!!.length > maxPreviewLength) {
                     withStyle(style = SpanStyle(color = Color(0xFF5800D6), fontWeight = FontWeight.Bold)) {
-                        append("Ver mais")
+                        append(stringResource(R.string.text_ver_mais))
                     }
                 }
             }
@@ -152,7 +152,7 @@ fun EventCard(evento: EventosRegiao) {
                         contentPadding = PaddingValues(0.dp), // Remove padding
                         elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 0.dp, hoveredElevation = 0.dp, focusedElevation = 0.dp)
                     ) {
-                        Text("Ver menos", color = Color(0xFF5800D6))
+                        Text(stringResource(R.string.text_ver_menos), color = Color(0xFF5800D6))
                     }
 
                 }

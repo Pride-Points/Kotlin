@@ -1,4 +1,5 @@
 package com.adevinta.mappicker.front.perfilusuarios
+
 import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,7 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.adevinta.mappicker.classes.ViewModel.PerfilViewModel
 import com.adevinta.mappicker.front.telasInscricao.Home
-
 
 @Composable
 fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel = PerfilViewModel(dataStoreManager = DataStoreManager(LocalContext.current))) {
@@ -38,10 +39,12 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Row (modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center ){
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
             Text(
-                text = "Defina sua imagem de perfil",
+                text = stringResource(R.string.text_defina_imagem_perfil),
                 modifier = Modifier
                     .padding(bottom = 16.dp),
                 fontSize = 24.sp,
@@ -51,7 +54,7 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
 
         Spacer(modifier = Modifier.height(20.dp))
 
-// Imagens e textos
+        // Imagens e textos
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
@@ -68,7 +71,7 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                         .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/FRyol1v.png") }
                 )
                 Text(
-                    text = "Encontre-se",
+                    text = stringResource(R.string.text_encontre_se),
                     modifier = Modifier.padding(top = 1.dp),
                     color = Color.Black,
                     fontSize = 20.sp,
@@ -77,7 +80,6 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
             }
 
             Spacer(modifier = Modifier.width(20.dp))
-
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -90,7 +92,7 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                         .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/1Xm10Ti.png") }
                 )
                 Text(
-                    text = "Orgulho",
+                    text = stringResource(R.string.text_orgulho),
                     modifier = Modifier.padding(top = 1.dp),
                     color = Color.Black,
                     fontSize = 20.sp,
@@ -116,7 +118,7 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                         .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/FIGlvZK.png") }
                 )
                 Text(
-                    text = "Lésbisca",
+                    text = stringResource(R.string.text_lesbica),
                     modifier = Modifier.padding(top = 1.dp),
                     color = Color.Black,
                     fontSize = 20.sp,
@@ -125,7 +127,6 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
             }
 
             Spacer(modifier = Modifier.width(20.dp))
-
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -138,7 +139,7 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                         .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/UyrpHAK.png") }
                 )
                 Text(
-                    text = "Gay",
+                    text = stringResource(R.string.text_gay),
                     modifier = Modifier.padding(top = 1.dp),
                     color = Color.Black,
                     fontSize = 20.sp,
@@ -164,7 +165,7 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                         .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/AsykGMW.png") }
                 )
                 Text(
-                    text = "Bissexual",
+                    text = stringResource(R.string.text_bissexual),
                     modifier = Modifier.padding(top = 1.dp),
                     color = Color.Black,
                     fontSize = 20.sp,
@@ -173,7 +174,6 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
             }
 
             Spacer(modifier = Modifier.width(20.dp))
-
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -186,7 +186,7 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                         .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/K2eWReM.png") }
                 )
                 Text(
-                    text = "Transexual",
+                    text = stringResource(R.string.text_transexual),
                     modifier = Modifier.padding(top = 1.dp),
                     color = Color.Black,
                     fontSize = 20.sp,
@@ -196,7 +196,6 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
         }
 
         Spacer(modifier = Modifier.height(25.dp))
-
 
         // Linha cinza
         Spacer(modifier = Modifier.weight(1f))
@@ -214,15 +213,13 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
         ) {
             Image(
                 painter = painterResource(id = R.mipmap.sair),
-                contentDescription = "Left Image",
+                contentDescription = stringResource(R.string.content_description_sair),
                 modifier = Modifier
                     .padding(start = 16.dp, top = 20.dp)
                     .size(75.dp)
                     .clickable {
-
                         CoroutineScope(Dispatchers.IO).launch {
                             dataStoreManager.clearData()
-
                             context.startActivity(Intent(context, Home::class.java))
                         }
                     }
@@ -230,7 +227,7 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
             Spacer(modifier = Modifier.weight(1f))
             Image(
                 painter = painterResource(id = R.mipmap.logo_pride),
-                contentDescription = "Right Image",
+                contentDescription = stringResource(R.string.content_description_logo_pride),
                 modifier = Modifier
                     .padding(end = 16.dp, top = 20.dp)
                     .size(75.dp)
@@ -238,8 +235,6 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
         }
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable

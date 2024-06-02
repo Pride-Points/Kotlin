@@ -1,5 +1,6 @@
 package com.adevinta.mappicker.menuitens.avaliacoes
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,6 +28,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import com.adevinta.mappicker.R
 import com.adevinta.mappicker.avaliacoes.AvaliacaoViewModel
 import com.adevinta.mappicker.classes.entidades.Avaliacao
+import com.adevinta.mappicker.classes.entidades.AvaliacaoDTO
 
 @Composable
 fun ModalDeletar(
@@ -126,30 +129,32 @@ fun ModalEditar(
 
     }
 }
-
 @Composable
-fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel()) {
+fun MinhasAvaliacoes(avaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel(), context: Context = LocalContext.current) {
 
+    val avals by avaliacaoViewModel.avaliacoes.observeAsState(emptyList())
 
-    val avals = AvaliacaoViewModel.avaliacoes.observeAsState().value.orEmpty()
-
+    // Carrega as avaliações quando a composição é iniciada
+    LaunchedEffect(Unit) {
+        avaliacaoViewModel.carregarAvaliacoesDoUsuario(context)
+    }
 
     Column {
         if (avals.isEmpty()) {
             Box(
-                contentAlignment = Alignment.Center, // Assegura centralização do conteúdo no Box
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .height(500.dp) // Define altura do Box
-                    .fillMaxWidth() // Assegura que o Box ocupe a largura total do seu contêiner pai
+                    .height(500.dp)
+                    .fillMaxWidth()
             ) {
                 Text(
                     "Faça sua primeira avaliação!",
                     style = TextStyle(
                         fontSize = 20.sp,
                         color = Color.Black,
-                        textAlign = TextAlign.Center // Alinha o texto ao centro horizontalmente
+                        textAlign = TextAlign.Center
                     ),
-                    modifier = Modifier.fillMaxWidth() // Assegura que o Text ocupe a largura total do Box
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         } else {
@@ -170,30 +175,18 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
             }
 
             LazyColumn(modifier = Modifier
-                .heightIn(min = 100.dp, max = 550.dp)  // Define a altura mínima e máxima para o LazyColumn
+                .heightIn(min = 100.dp, max = 550.dp)
                 .fillMaxWidth()) {
                 items(items = avals) { aval ->
-                    var isExpanded: Boolean by remember {
-                        mutableStateOf(false)
-                    }
-
-                    var showDialogEdit by remember {
-                        mutableStateOf(false)
-                    }
-
-                    var showDialogDelete by remember {
-                        mutableStateOf(false)
-                    }
-
-                    var selectedItem by remember {
-                        mutableStateOf<Avaliacao?>(null)
-                    }
+                    var isExpanded by remember { mutableStateOf(false) }
+                    var showDialogEdit by remember { mutableStateOf(false) }
+                    var showDialogDelete by remember { mutableStateOf(false) }
+                    var selectedItem by remember { mutableStateOf<AvaliacaoDTO?>(null) }
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        // Adicionando sombra fora do Box
                         Box(
                             modifier = Modifier
                                 .padding(10.dp)
@@ -214,7 +207,7 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
 
                                     Row(modifier = Modifier.fillMaxWidth()) {
                                         Text(
-                                            text = "${aval.loja}",
+                                            text = aval.nomeAvaliador ?: "",
                                             style = TextStyle(
                                                 fontWeight = FontWeight.Bold,
                                                 fontSize = 16.sp
@@ -223,8 +216,8 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                         Spacer(modifier = Modifier.weight(1f))
 
                                         val totalEstrelas = 5
-                                        val estrelasAmarelas = aval.estrelas
-                                        val estrelasCinza = totalEstrelas - estrelasAmarelas!!
+                                        val estrelasAmarelas = aval.nota.toInt()
+                                        val estrelasCinza = totalEstrelas - estrelasAmarelas
                                         Row {
                                             repeat(estrelasAmarelas) {
                                                 Image(
@@ -244,13 +237,13 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                         }
                                     }
 
-                                    //Ver mais e limitação de caracteres
+                                    // Ver mais e limitação de caracteres
                                     val maxPreviewLength = 50
                                     val textToShow =
                                         if (isExpanded || aval.comentario!!.length <= maxPreviewLength) {
                                             aval.comentario
                                         } else {
-                                            "${aval.comentario.take(maxPreviewLength)}... "
+                                            "${aval.comentario!!.take(maxPreviewLength)}... "
                                         }
                                     val annotatedText = buildAnnotatedString {
                                         append(textToShow)
@@ -283,20 +276,12 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                             .padding(8.dp)
                                     ) {
 
-                                        //TERCEIRA SPRINT DISCUSSÃO
-                                        /* Text(
-                                             text = "${aval.sentimento}",
-                                             color = Color(0xFF5800D6),
-                                             fontWeight = FontWeight.Bold,
-                                             fontSize = 15.sp
-                                         )*/
-
-                                        //Ver menos
+                                        // Ver menos
                                         if (isExpanded) {
                                             Button(
                                                 onClick = { isExpanded = false },
                                                 colors = ButtonDefaults.buttonColors(Color.Transparent),
-                                                contentPadding = PaddingValues(0.dp), // Remove padding
+                                                contentPadding = PaddingValues(0.dp),
                                                 elevation = ButtonDefaults.buttonElevation(
                                                     defaultElevation = 0.dp,
                                                     pressedElevation = 0.dp,
@@ -306,7 +291,6 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                             ) {
                                                 Text("Ver menos", color = Color(0xFF5800D6))
                                             }
-
                                         }
 
                                         Spacer(modifier = Modifier.weight(1f))
@@ -321,7 +305,6 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                                     selectedItem = aval
                                                 }
                                         )
-
 
                                         Image(
                                             painter = painterResource(id = R.mipmap.linha_avaliacao),
@@ -338,7 +321,6 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                                     showDialogDelete = true
                                                     selectedItem = aval
                                                 }
-
                                         )
 
                                         if (showDialogDelete) {
@@ -347,7 +329,7 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                                 onCloseDialog = { showDialogDelete = false },
                                                 onConfirmDialog = {
                                                     selectedItem?.id?.let { id ->
-                                                        AvaliacaoViewModel.removerAvaliacao(id)
+                                                        avaliacaoViewModel.removerAvaliacao(context, id)
                                                     }
                                                     showDialogDelete = false
                                                 }
@@ -363,9 +345,9 @@ fun MinhasAvaliacoes(AvaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
                                                         val telaEdit = Intent(
                                                             contexto,
                                                             TelaEdicao::class.java
-                                                        )  // Usar 'it.id' supondo que cada avaliação tem um ID
-
-                                                        contexto.startActivity(Intent(contexto, TelaEdicao::class.java))
+                                                        )
+                                                        telaEdit.putExtra("itemSelecionado", it)
+                                                        contexto.startActivity(telaEdit)
                                                     }
                                                 }
                                             )

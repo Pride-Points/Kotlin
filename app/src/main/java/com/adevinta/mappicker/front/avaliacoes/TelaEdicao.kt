@@ -44,16 +44,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adevinta.mappicker.R
 import com.adevinta.mappicker.avaliacoes.AvaliacaoViewModel
-import com.adevinta.mappicker.classes.entidades.Avaliacao
+import com.adevinta.mappicker.classes.entidades.AvaliacaoDTO
 import com.adevinta.mappicker.ui.theme.pridepointsTheme
+import android.util.Log
 
 class TelaEdicao : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //aqui recuperamos os dados enviados da tela anterior
-        //esta operação DEVE E TEM que ser feita neste local (onCreate)
+        // Aqui recuperamos os dados enviados da tela anterior
+        // Esta operação DEVE E TEM que ser feita neste local (onCreate)
         val extras = intent.extras
 
         setContent {
@@ -70,35 +70,41 @@ class TelaEdicao : ComponentActivity() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-//o nome é extras mas o tipo é bundle
 fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel()) {
-
 
     val text = buildAnnotatedString {
         append("Como foi sua ")
         withStyle(
             style = SpanStyle(
                 color = Color(0xFF5800D6),
-
-                )
+            )
         ) {
             append("experiência")
         }
         append("?")
-
     }
-    val aval = extras?.getSerializable("itemSelecionado", Avaliacao::class.java)
 
-    //API
-    val (novaEdit, novaEditSetter) = remember {
-        mutableStateOf(Avaliacao(aval!!.id, aval.loja))
+    val aval = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        extras?.getSerializable("itemSelecionado", AvaliacaoDTO::class.java)
+    } else {
+        extras?.getSerializable("itemSelecionado") as? AvaliacaoDTO
+    }
+
+    if (aval == null) {
+        Log.e("TelaEdicao", "Avaliação não encontrada")
+        activity.finish()
+        return
+    }
+
+    // API
+    var novaEdit by remember {
+        mutableStateOf(aval.copy())
     }
 
     val totalEstrelas = 5
     var estrelasSelecionadas by remember {
-        mutableStateOf(aval!!.estrelas)
+        mutableStateOf(aval.nota.toInt())
     }
 
     Column(
@@ -107,12 +113,10 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
     ) {
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            //Imagem aqui
             Spacer(modifier = Modifier.weight(0.5f))
             Image(
                 painter = painterResource(id = R.mipmap.arrow_left_voltar),
@@ -127,7 +131,6 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
             Spacer(modifier = Modifier.weight(2f))
             Text(text = "Edição", Modifier.padding(vertical = 15.dp))
             Spacer(modifier = Modifier.weight(3f))
-
         }
         Divider(
             color = Color(android.graphics.Color.parseColor("#5800D6")),
@@ -143,14 +146,14 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
             (1..totalEstrelas).forEach { index ->
                 Image(
                     painter = painterResource(
-                        id = if (index <= estrelasSelecionadas!!) R.mipmap.estrela_amarela else R.mipmap.estrela_cinza
+                        id = if (index <= estrelasSelecionadas) R.mipmap.estrela_amarela else R.mipmap.estrela_cinza
                     ),
-                    contentDescription = if (index <= estrelasSelecionadas!!) "Estrela Amarela" else "Estrela Cinza",
+                    contentDescription = if (index <= estrelasSelecionadas) "Estrela Amarela" else "Estrela Cinza",
                     modifier = Modifier
                         .size(30.dp)
                         .clickable {
                             estrelasSelecionadas = index
-                            novaEditSetter(novaEdit.copy(estrelas = index))
+                            novaEdit = novaEdit.copy(nota = index.toDouble())
                         }
                 )
             }
@@ -182,7 +185,7 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
                     ),
                     colors = color,
                     onClick = {
-                        novaEditSetter(novaEdit.copy(sentimento = "Amade"))
+                        novaEdit = novaEdit.copy(tag = "Amade")
                     }) {
                     Text(text = "Amade")
                 }
@@ -192,9 +195,8 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
                     .border(
                         1.dp, Color.Black, RoundedCornerShape(10.dp)
                     ),
-
                     colors = color, onClick = {
-                        novaEditSetter(novaEdit.copy(sentimento = "Amade"))
+                        novaEdit = novaEdit.copy(tag = "Brave")
                     }) {
                     Text(text = "Brave")
                 }
@@ -212,9 +214,8 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
                     .border(
                         1.dp, Color.Black, RoundedCornerShape(10.dp)
                     ),
-
                     colors = color, onClick = {
-                        novaEditSetter(novaEdit.copy(sentimento = "Amade"))
+                        novaEdit = novaEdit.copy(tag = "Acolhide")
                     }) {
                     Text(text = "Acolhide")
                 }
@@ -224,9 +225,8 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
                     .border(
                         1.dp, Color.Black, RoundedCornerShape(10.dp)
                     ),
-
                     colors = color, onClick = {
-                        novaEditSetter(novaEdit.copy(sentimento = "Amade"))
+                        novaEdit = novaEdit.copy(tag = "Frustrade")
                     }) {
                     Text(text = "Frustrade")
                 }
@@ -243,9 +243,8 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
                     .border(
                         1.dp, Color.Black, RoundedCornerShape(10.dp)
                     ),
-
                     colors = color, onClick = {
-                        novaEditSetter(novaEdit.copy(sentimento = "Amade"))
+                        novaEdit = novaEdit.copy(tag = "Feliz")
                     }) {
                     Text(text = "Feliz")
                 }
@@ -255,9 +254,8 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
                     .border(
                         1.dp, Color.Black, RoundedCornerShape(10.dp)
                     ),
-
                     colors = color, onClick = {
-                        novaEditSetter(novaEdit.copy(sentimento = "Amade"))
+                        novaEdit = novaEdit.copy(tag = "Humilhade")
                     }) {
                     Text(text = "Humilhade")
                 }
@@ -266,15 +264,16 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        OutlinedTextField(label = { Text(text = "Comentário") },
-            value = novaEdit.comentario.toString(),
-            onValueChange = { novaEditSetter(novaEdit.copy(comentario = it)) }
+        OutlinedTextField(
+            label = { Text(text = "Comentário") },
+            value = novaEdit.comentario ?: "",
+            onValueChange = { novaEdit = novaEdit.copy(comentario = it) }
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
         Button(modifier = Modifier.size(120.dp, 60.dp), onClick = {
-            avaliacaoViewModel.atualizarAvaliacao(aval!!.id, novaEdit, onSuccess = {
+            avaliacaoViewModel.atualizarAvaliacao(activity, novaEdit.id!!, novaEdit, aval.idEmpresa!!.toLong(), onSuccess = {
                 activity.finish()
             }, onError = {
                 // Lidar com o erro, mostrar uma mensagem ao usuário, etc.
@@ -282,12 +281,9 @@ fun TelaEdicao(extras: Bundle?, activity: Activity, avaliacaoViewModel: Avaliaca
         }) {
             Text(text = "Avaliar", fontSize = 20.sp)
         }
-
     }
 }
 
-
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview2() {

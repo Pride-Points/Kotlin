@@ -30,12 +30,33 @@ interface Apipridepoints {
     suspend fun getAvaliacoes(): Response<List<Avaliacao>>
 
     @GET("/avaliacoes/{idEmpresa}")
-    suspend fun getAvaliacoesByEmpresaId(@Path("idEmpresa") idEmpresa: Int): Response<List<Avaliacao>>
+    suspend fun getAvaliacoesByEmpresaId(@Path("idEmpresa") idEmpresa: Int): Response<List<AvaliacaoDTO>>
 
-    @PUT("/avaliacoes/{id}")
-    suspend fun updateAvaliacao(@Path("id") id: Int, @Body novaAvaliacao: Avaliacao): Response<Avaliacao>
+    @PUT("/avaliacoes/{idAvaliacao}/{idUsuario}/{idEmpresa}")
+    suspend fun updateAvaliacao(
+        @Path("idAvaliacao") idAvaliacao: Int,
+        @Path("idUsuario") idUsuario: Int,
+        @Path("idEmpresa") idEmpresa: Int,
+        @Header("Authorization") token: String,
+        @Body novaAvaliacao: AvaliacaoDTO
+    ): Response<AvaliacaoDTO>
+
+
     @DELETE("/avaliacoes/{idAvaliacao}")
-    suspend fun deleteAvaliacao(@Path("idAvaliacao") idAvaliacao: Int): Response<Unit>
+    suspend fun deleteAvaliacao(
+        @Path("idAvaliacao") idAvaliacao: Int,
+        @Header("Authorization") token: String
+    ): Response<Unit>
+
+    @GET("/users/imagem-perfil/{idUser}")
+    suspend fun getUserimage(@Path("iduser") idUser: Long): Response<ImagemPerfil>
+
+
+    @POST("/users/imagem-perfil/{idUser}")
+    suspend fun patchUserImage(
+        @Path("idUser") idUser: Long,
+        @Body imagemPerfil: ImagemPerfil,
+    ): Response<ImagemPerfil>
 
     @GET("/avaliacoes/usuario/{idUsuario}")
     suspend fun getAvaliacoesUsuario(
@@ -43,18 +64,18 @@ interface Apipridepoints {
         @Header("Authorization") token: String
     ): Response<List<AvaliacaoDTO>>
 
-    @PATCH("/users/imagem-perfil/{idUser}")
-    suspend fun patchUserImage(
-        @Path("idUser") idUser: Long,
-        @Body imagemPerfil: ImagemPerfil,
-    ): Response<ImagemPerfil>
+    @GET("/avaliacoes/usuario/{idUsuario}")
+    suspend fun listarAvaliacoesDoUsuario(
+        @Path("idUsuario") idUsuario: Long,
+        @Header("Authorization") token: String
+    ): Response<List<AvaliacaoDTO>>
 
     @POST("/avaliacoes/{empresaId}/{usuarioId}")
     suspend fun postAvaliacao(
-        @Body avaliacaoCriacaoDTO: Avaliacao,
+        @Body avaliacaoCriacaoDTO: AvaliacaoDTO,
         @Path("empresaId") empresaId: Long,
         @Path("usuarioId") usuarioId: Long
-    ): Response<Avaliacao>
+    ): Response<AvaliacaoDTO>
 
     @POST("/users/login")
     suspend fun login(@Body credenciais: Credenciais): Response<UsuarioToken>

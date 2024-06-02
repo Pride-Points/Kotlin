@@ -1,12 +1,10 @@
 package com.adevinta.mappicker.front.perfilusuarios
-import android.content.Context
-import android.util.Log
+import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.adevinta.mappicker.ui.theme.pridepointsTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,23 +17,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.adevinta.mappicker.classes.DataStorage.DataStoreManager
+import com.adevinta.mappicker.ui.theme.pridepointsTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import com.adevinta.mappicker.classes.ViewModel.PerfilViewModel
-import com.adevinta.mappicker.classes.ViewModel.SalvarLogin
+import com.adevinta.mappicker.front.telasInscricao.Home
 
 
 @Composable
-fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel = PerfilViewModel()) {
+fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: PerfilViewModel = PerfilViewModel(dataStoreManager = DataStoreManager(LocalContext.current))) {
     val context = LocalContext.current
-    val salvarLogin = SalvarLogin(context)
-    val userToken = salvarLogin.getUserToken()
-    val userId = userToken?.userId ?: -1L
-    val tokenUser = userToken?.token ?: "Token não encontrado"
-
-    // Adicionando Log para verificar o ID do usuário
-    Log.d("TelaPerfilConfiguracao", "User ID: $userId")
-    println("User ID: $userId")  // Adicionando um print
-
-
+    val dataStoreManager = DataStoreManager(context)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,8 +63,9 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                 Image(
                     painter = painterResource(id = R.mipmap.descubra),
                     contentDescription = null,
-                    modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://unsplash.com/pt-br/fotografias/uma-pessoa-segurando-uma-bandeira-do-arco-iris-na-mao-kqfA8AMt4tI", context ) }
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/FRyol1v.png") }
                 )
                 Text(
                     text = "Encontre-se",
@@ -90,8 +85,9 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                 Image(
                     painter = painterResource(id = R.mipmap.orgulho),
                     contentDescription = null,
-                    modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://empoderadxs.com.br/wp-content/uploads/2020/08/progress-pride-flag.jpg", context ) }
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/1Xm10Ti.png") }
                 )
                 Text(
                     text = "Orgulho",
@@ -115,8 +111,9 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                 Image(
                     painter = painterResource(id = R.mipmap.lesbica),
                     contentDescription = null,
-                    modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://static.wikia.nocookie.net/identidades/images/f/fd/Bandeira_l%C3%A9sbica_sunset.png/revision/latest?cb=20220810191743&path-prefix=pt-br", context ) }
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/FIGlvZK.png") }
                 )
                 Text(
                     text = "Lésbisca",
@@ -136,8 +133,9 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                 Image(
                     painter = painterResource(id = R.mipmap.gay),
                     contentDescription = null,
-                    modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://pbs.twimg.com/media/EZbWtuXXkAE4bS_.jpg", context ) }
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/UyrpHAK.png") }
                 )
                 Text(
                     text = "Gay",
@@ -161,8 +159,9 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                 Image(
                     painter = painterResource(id = R.mipmap.bissexual),
                     contentDescription = null,
-                    modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bisexual_Pride_Flag.svg/300px-Bisexual_Pride_Flag.svg.png", context ) }
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/AsykGMW.png") }
                 )
                 Text(
                     text = "Bissexual",
@@ -182,8 +181,9 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                 Image(
                     painter = painterResource(id = R.mipmap.transexual),
                     contentDescription = null,
-                    modifier = Modifier.size(100.dp)
-                        .clickable { perfilViewModel.postUserProfile(userId,tokenUser, "https://www.doistercos.com.br/wp-content/uploads/2023/11/bandeiratrans.jpg", context ) }
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clickable { perfilViewModel.postUserProfile("https://i.imgur.com/K2eWReM.png") }
                 )
                 Text(
                     text = "Transexual",
@@ -218,6 +218,14 @@ fun TelaPerfilConfiguracao(modifier: Modifier = Modifier, perfilViewModel: Perfi
                 modifier = Modifier
                     .padding(start = 16.dp, top = 20.dp)
                     .size(75.dp)
+                    .clickable {
+
+                        CoroutineScope(Dispatchers.IO).launch {
+                            dataStoreManager.clearData()
+
+                            context.startActivity(Intent(context, Home::class.java))
+                        }
+                    }
             )
             Spacer(modifier = Modifier.weight(1f))
             Image(

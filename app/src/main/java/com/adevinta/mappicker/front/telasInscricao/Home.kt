@@ -30,24 +30,49 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import com.adevinta.mappicker.R
+import com.adevinta.mappicker.classes.DataStorage.DataStoreManager
+import com.adevinta.mappicker.front.TelaInicialUsuario
 import com.adevinta.mappicker.ui.theme.pridepointsTheme
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+
 class Home : ComponentActivity() {
+    private lateinit var dataStoreManager: DataStoreManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            pridepointsTheme {
-                // Defina o background do app aqui usando Surface
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFF4200A1) // Cor de fundo do app
-                ) {
-                    pridepointsWelcomeScreen()
+        dataStoreManager = DataStoreManager(this)
+
+        // Verifica se o usuário está logado
+        lifecycleScope.launch {
+            val token = dataStoreManager.token.first()
+            val userId = dataStoreManager.userId.first()
+
+            if (!token.isNullOrEmpty() && userId != null) {
+                // Usuário está logado, redireciona para a tela inicial do usuário
+                val intent = Intent(this@Home, TelaInicialUsuario::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                // Usuário não está logado, mostra a tela de boas-vindas
+                setContent {
+                    pridepointsTheme {
+                        // Defina o background do app aqui usando Surface
+                        Surface(
+                            modifier = Modifier.fillMaxSize(),
+                            color = Color(0xFF4200A1) // Cor de fundo do app
+                        ) {
+                            pridepointsWelcomeScreen()
+                        }
+                    }
                 }
             }
         }
     }
 }
+
 
 
 

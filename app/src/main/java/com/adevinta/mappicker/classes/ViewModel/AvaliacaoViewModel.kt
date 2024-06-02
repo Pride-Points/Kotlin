@@ -2,74 +2,78 @@ package com.adevinta.mappicker.avaliacoes
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.adevinta.mappicker.api.RetrofitService
-import com.adevinta.mappicker.classes.entidades.Avaliacao
+import com.adevinta.mappicker.classes.DataStorage.DataStoreManager
+import com.adevinta.mappicker.classes.entidades.AvaliacaoDTO
 
 class AvaliacaoViewModel : ViewModel() {
 
+    val avaliacoes = MutableLiveData<List<AvaliacaoDTO>>()
+    val erroApi = MutableLiveData<String>()
 
-    val mockAvaliacoes = SnapshotStateList<Avaliacao>().apply {
-        add(Avaliacao(id = 1, loja = "Loja A", comentario = "Ótimo serviço!", sentimento = "positivo", estrelas = 5))
-        add(Avaliacao(id = 2, loja = "Loja B", comentario = "Poderia ser melhor.", sentimento = "negativo", estrelas = 2))
-        add(Avaliacao(id = 3, loja = "Loja C", comentario = "Atendimento razoável.", sentimento = "neutro", estrelas = 3))
-        add(Avaliacao(id = 4, loja = "Loja D", comentario = "Excelente qualidade dos produtos!", sentimento = "positivo", estrelas = 4))
-        add(Avaliacao(id = 5, loja = "Loja E", comentario = "Não gostei do atendimento.", sentimento = "negativo", estrelas = 1))
-    }
+    private val api = RetrofitService.getApipridepointsService()
 
-    val avaliacoes = MutableLiveData(mockAvaliacoes)
+    fun carregarAvaliacoesDoUsuario(context: Context) {
+        val dataStoreManager = DataStoreManager(context)
 
-    val api = RetrofitService.getApipridepointsService()
-    val erroApi = MutableLiveData("")
-
-    init {
-        carregarTodasAvaliacoes()
-    }
-
-    fun carregarTodasAvaliacoes(){
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             try {
-                val response = api.getAvaliacoes()
-                if (response.isSuccessful) {
-                    avaliacoes.value!!.clear()
-                    avaliacoes.value!!.addAll(response.body() ?: emptyList())
+                val token = dataStoreManager.token.first()
+                val idUsuario = dataStoreManager.userId.first()
+
+                if (token != null && idUsuario != null) {
+                    val response = api.getAvaliacoesUsuario(idUsuario, "Bearer $token")
+                    if (response.isSuccessful) {
+                        avaliacoes.postValue(response.body())
+                    } else {
+                        Log.e("api", "Erro ao carregar avaliações do usuário")
+                        erroApi.postValue(response.errorBody()?.string())
+                    }
                 } else {
-                    Log.e("api", "erro no get")
-                    erroApi.postValue(response.errorBody()!!.string())
+                    Log.e("api", "Token ou ID do usuário não encontrados")
+                    erroApi.postValue("Token ou ID do usuário não encontrados")
                 }
             } catch (e: Exception) {
-                Log.e("api", "Deu ruim no get! ${e.message}")
+                Log.e("api", "Exceção ao carregar avaliações do usuário: ${e.message}")
                 erroApi.postValue(e.message)
             }
         }
     }
 
-    fun criarAvaliacao(avaliacao: Avaliacao, idUser: Long, idEmpresa: Long, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
+    fun criarAvaliacao(context: Context, avaliacao: AvaliacaoDTO, idEmpresa: Long, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val dataStoreManager = DataStoreManager(context)
+
+        viewModelScope.launch {
             try {
-                // Presume-se que 'api' é uma instância de um cliente Retrofit configurado
-                val response = api.postAvaliacao(avaliacao, idUser, idEmpresa)  // Envia o objeto 'avaliacao' para a API
-                if (response.isSuccessful) {
-                    // Operações em caso de sucesso, como atualizar a UI ou lista de dados
-                    withContext(Dispatchers.Main) {
-                        onSuccess()
+                val token = dataStoreManager.token.first()
+                val idUsuario = dataStoreManager.userId.first()
+
+                if (token != null && idUsuario != null) {
+                    val response = api.postAvaliacao(avaliacao, idEmpresa, idUsuario)
+                    if (response.isSuccessful) {
+                        withContext(Dispatchers.Main) {
+                            onSuccess()
+                        }
+                    } else {
+                        Log.e("api", "Erro ao criar avaliação")
+                        withContext(Dispatchers.Main) {
+                            onError(response.errorBody()?.string() ?: "Erro desconhecido")
+                        }
                     }
                 } else {
-                    // Trata erro de resposta não bem-sucedida
-                    Log.e("api", "Erro ao criar avaliação")
+                    Log.e("api", "Token ou ID do usuário não encontrados")
                     withContext(Dispatchers.Main) {
-                        onError(response.errorBody()?.string() ?: "Erro desconhecido")
+                        onError("Token ou ID do usuário não encontrados")
                     }
                 }
             } catch (e: Exception) {
-                // Trata exceções de chamada de rede ou serialização
                 Log.e("api", "Exceção ao criar avaliação: ${e.message}")
                 withContext(Dispatchers.Main) {
                     onError(e.message ?: "Erro desconhecido")
@@ -78,21 +82,24 @@ class AvaliacaoViewModel : ViewModel() {
         }
     }
 
-    fun getUserIdFromPreferences(context: Context): Long {
-        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-        val userIdString = sharedPreferences.getString("USER_ID", "")
-        return userIdString?.toLongOrNull() ?: -1L  // Retorna -1 se não for possível converter
-    }
+    fun removerAvaliacao(context: Context, idAvaliacao: Long) {
+        val dataStoreManager = DataStoreManager(context)
 
-    fun removerAvaliacao(idAvaliacao: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             try {
-                val response = api.deleteAvaliacao(idAvaliacao)
-                if (response.isSuccessful) {
-                    carregarTodasAvaliacoes()  // Recarregar as avaliações após a remoção
+                val token = dataStoreManager.token.first()
+
+                if (token != null) {
+                    val response = api.deleteAvaliacao(idAvaliacao.toInt(), "Bearer $token")
+                    if (response.isSuccessful) {
+                        carregarAvaliacoesDoUsuario(context)
+                    } else {
+                        Log.e("api", "Erro ao deletar avaliação")
+                        erroApi.postValue(response.errorBody()?.string() ?: "Erro ao deletar avaliação")
+                    }
                 } else {
-                    Log.e("api", "Erro ao deletar avaliação")
-                    erroApi.postValue(response.errorBody()?.string() ?: "Erro ao deletar avaliação")
+                    Log.e("api", "Token não encontrado")
+                    erroApi.postValue("Token não encontrado")
                 }
             } catch (e: Exception) {
                 Log.e("api", "Erro na API ao deletar avaliação: ${e.message}")
@@ -100,23 +107,39 @@ class AvaliacaoViewModel : ViewModel() {
             }
         }
     }
+    fun atualizarAvaliacao(context: Context, idAvaliacao: Long, novaAvaliacao: AvaliacaoDTO, idEmpresa: Long, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val dataStoreManager = DataStoreManager(context)
 
-    fun atualizarAvaliacao(id: Int, novaAvaliacao: Avaliacao, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             try {
-                val response = api.updateAvaliacao(id, novaAvaliacao)
-                if (response.isSuccessful) {
-                    val updatedAvaliacao = response.body()
-                    // Atualize seu LiveData ou estado aqui, se necessário
-                    // Notifique a UI sobre a atualização bem sucedida
-                    onSuccess()
+                val token = dataStoreManager.token.first()
+                val idUsuario = dataStoreManager.userId.first()
+
+                if (token != null && idUsuario != null) {
+                    val response = api.updateAvaliacao(idAvaliacao.toInt(), idUsuario.toInt(),idEmpresa.toInt(),"Bearer $token", novaAvaliacao )
+                    if (response.isSuccessful) {
+                        withContext(Dispatchers.Main) {
+                            onSuccess()
+                        }
+                    } else {
+                        Log.e("api", "Erro ao atualizar avaliação")
+                        withContext(Dispatchers.Main) {
+                            onError(response.errorBody()?.string() ?: "Erro ao atualizar avaliação")
+                        }
+                    }
                 } else {
-                    Log.e("api", "Erro ao atualizar avaliação")
-                    onError(response.errorBody()?.string() ?: "Erro ao atualizar avaliação")
+                    Log.e("api", "Token ou ID do usuário não encontrados")
+                    withContext(Dispatchers.Main) {
+                        onError("Token ou ID do usuário não encontrados")
+                    }
                 }
             } catch (e: Exception) {
-                onError(e.message ?: "Erro desconhecido")
+                Log.e("api", "Exceção ao atualizar avaliação: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    onError(e.message ?: "Erro desconhecido")
+                }
             }
         }
     }
+
 }

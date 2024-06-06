@@ -48,7 +48,13 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-
+    <activity android:name=".front.avaliacoes.TelaAvaliacaoActivity"
+        android:exported="true">
+      <intent-filter>
+        <action android:name="com.adevinta.mappicker.ACTION_VIEW_DETAILS" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
     <activity
         android:name="com.adevinta.leku.LocationPickerActivity"
         android:label="@string/leku_title_activity_location_picker"

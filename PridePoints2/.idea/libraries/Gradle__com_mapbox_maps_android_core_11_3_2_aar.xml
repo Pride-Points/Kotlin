@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mapbox.maps:android-core:11.3.2@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/190e6956ac6b7780477946e96f7e344b/transformed/android-core-11.3.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/190e6956ac6b7780477946e96f7e344b/transformed/android-core-11.3.2/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.maps/android-core/11.3.2/83bac08853a30b03322b30cbc67227b1022e0041/android-core-11.3.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.maps/android-core/11.3.2/313e97b66ff53417814a3daa3f8c4c56dd3432d/android-core-11.3.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

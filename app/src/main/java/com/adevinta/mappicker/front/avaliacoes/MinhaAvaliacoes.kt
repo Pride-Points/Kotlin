@@ -140,7 +140,7 @@ fun MinhasAvaliacoes(avaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
     }
 
     Column {
-        if (avals.isEmpty()) {
+        if (avals.isNullOrEmpty()) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier

@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mapbox.extension:maps-compose:11.3.1@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9ddf1a7a297e73c6489ffc8a218eb01b/transformed/maps-compose-11.3.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9ddf1a7a297e73c6489ffc8a218eb01b/transformed/maps-compose-11.3.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.extension/maps-compose/11.3.1/4932e53e6a791e5d3c4e7f4286f9047081b13857/maps-compose-11.3.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.extension/maps-compose/11.3.1/9444e25e50d0c781a641e47400c27a0709c6e979/maps-compose-11.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

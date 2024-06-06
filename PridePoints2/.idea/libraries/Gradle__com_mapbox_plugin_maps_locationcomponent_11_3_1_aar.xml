@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mapbox.plugin:maps-locationcomponent:11.3.1@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/660e0f7647b3befd2777a2138f441f81/transformed/maps-locationcomponent-11.3.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/660e0f7647b3befd2777a2138f441f81/transformed/maps-locationcomponent-11.3.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/660e0f7647b3befd2777a2138f441f81/transformed/maps-locationcomponent-11.3.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.plugin/maps-locationcomponent/11.3.1/81b5b48b09aa5bb68dab46e6a6a4b360def5cc5/maps-locationcomponent-11.3.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.plugin/maps-locationcomponent/11.3.1/eff7e7b72a7f8d576edcc596e488d43e1c3f3cc1/maps-locationcomponent-11.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

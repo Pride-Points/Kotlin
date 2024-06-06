@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mapbox.plugin:maps-scalebar:11.3.1@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1938120a76ec8dc01ec8efa01b24e42e/transformed/maps-scalebar-11.3.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1938120a76ec8dc01ec8efa01b24e42e/transformed/maps-scalebar-11.3.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1938120a76ec8dc01ec8efa01b24e42e/transformed/maps-scalebar-11.3.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.plugin/maps-scalebar/11.3.1/f0b742012fc5ba86b4fd312d154af2be883800a8/maps-scalebar-11.3.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.plugin/maps-scalebar/11.3.1/975f848ed22e59db0d6a93501c0d62b9a7d36d2a/maps-scalebar-11.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -20,6 +20,31 @@ class AvaliacaoViewModel : ViewModel() {
 
     private val api = RetrofitService.getApipridepointsService()
 
+    fun carregarAvaliacoesDaEmpresa(context: Context, empresaId: Long) {
+        viewModelScope.launch {
+            try {
+                val response = api.getAvaliacoesByEmpresaId2(empresaId.toInt())
+                if (response.isSuccessful) {
+                    val avaliacoesList = response.body()
+                    if (avaliacoesList != null) {
+                        avaliacoes.postValue(avaliacoesList)
+                    } else {
+                        avaliacoes.postValue(emptyList())
+                    }
+                } else {
+                    Log.e("api", "Erro ao carregar avaliações da empresa")
+                    erroApi.postValue(response.errorBody()?.string())
+                    avaliacoes.postValue(emptyList()) // Adicionado para garantir que a lista vazia seja tratada
+                }
+            } catch (e: Exception) {
+                Log.e("api", "Exceção ao carregar avaliações da empresa: ${e.message}")
+                erroApi.postValue(e.message)
+                avaliacoes.postValue(emptyList()) // Adicionado para garantir que a lista vazia seja tratada
+            }
+        }
+    }
+
+
     fun carregarAvaliacoesDoUsuario(context: Context) {
         val dataStoreManager = DataStoreManager(context)
 

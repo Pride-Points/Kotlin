@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mapbox.plugin:maps-overlay:11.3.1@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/0aee8c827a6780e2d1a31b8fd27cfcf4/transformed/maps-overlay-11.3.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0aee8c827a6780e2d1a31b8fd27cfcf4/transformed/maps-overlay-11.3.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.plugin/maps-overlay/11.3.1/433f1f77aa6c036ec81252042ead02814a9e46c9/maps-overlay-11.3.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.plugin/maps-overlay/11.3.1/df29cf70edd864e4a44d6a1e0c58a5eb08ffbfb3/maps-overlay-11.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,6 +1,11 @@
 package com.adevinta.mappicker.front.avaliacoes
 
 
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,12 +29,40 @@ import com.adevinta.mappicker.R
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.layout.ContentScale
+import androidx.lifecycle.Observer
 import coil.compose.AsyncImage
+import com.adevinta.mappicker.avaliacoes.AvaliacaoViewModel
+import com.adevinta.mappicker.classes.entidades.AvaliacaoDTO
 
+class TelaAvaliacaoActivity : ComponentActivity() {
+
+    private val viewModel: AvaliacaoViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val empresaId = intent.getLongExtra("EMPRESA_ID", -1)
+
+        viewModel.carregarAvaliacoesDaEmpresa(this, empresaId)
+
+        viewModel.avaliacoes.observe(this, Observer { avaliacoes ->
+            setContent {
+                if(avaliacoes.isNullOrEmpty()){
+                    TelaAvaliacao(avaliacoes = emptyList())
+                }else{
+                    TelaAvaliacao(avaliacoes)
+                }
+            }
+        })
+
+        viewModel.erroApi.observe(this, Observer { erro ->
+            Log.e("api", "EROOOO NA APAIIIII")
+
+        })
+    }
+}
 
 @Composable
-fun TelaAvaliacao() {
-
+fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,36 +71,57 @@ fun TelaAvaliacao() {
     ) {
         TopoDaTela()
         LinhaRoxa()
-
         Spacer(modifier = Modifier.height(40.dp))
 
-        // Titulo do estabelecimento e nota
-        TituloENota(estabelecimento = "Sucos da Vandinha", nota = 4.5f)
-
-        // Descrição do estabelecimento
-        DescricaoDoEstabelecimento(descricao = "Banca de diferentes sabores de sucos...")
-
-        // Botão "Avalie"
-        Button(
-            onClick = { /* Ação ao clicar no botão */ },
-            modifier = Modifier
-                .padding(top = 1.dp)
-                .width(130.dp),
+        if (avaliacoes.isNotEmpty()) {
+            TituloENota(estabelecimento = "Nome do Estabelecimento", nota = avaliacoes[0].nota.toFloat())
+            DescricaoDoEstabelecimento(descricao = "Horario de funcionamento: 08:00 - 18:00")
+            Button(
+                onClick = { /* Ação ao clicar no botão */ },
+                modifier = Modifier
+                    .padding(top = 1.dp)
+                    .width(130.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFF5800D6)),
                 contentPadding = PaddingValues(vertical = 10.dp),
-        shape = RoundedCornerShape(12.dp)
-        ) {
-        Text(
-            text = "Avalie",
-            color = Color.White,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
-
-        // Avaliações
-        Avaliacoes()
-
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = "Avalie",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Avaliacoes(avaliacoes)
+        } else {
+            TituloENota(estabelecimento = "Nome do Estabelecimento", 0.toFloat())
+            DescricaoDoEstabelecimento(descricao = "Horario de funcionamento: 08:00 - 18:00")
+            Button(
+                onClick = { /* Ação ao clicar no botão */ },
+                modifier = Modifier
+                    .padding(top = 1.dp)
+                    .width(130.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFF5800D6)),
+                contentPadding = PaddingValues(vertical = 10.dp),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = "Avalie",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Text(
+                text = "Essa empresa não tem avaliação",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+                color = Color.Gray,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 
@@ -96,8 +150,6 @@ fun TopoDaTela() {
     }
 }
 
-
-
 @Composable
 fun LinhaRoxa() {
     Spacer(
@@ -107,7 +159,6 @@ fun LinhaRoxa() {
             .background(color = Color(0xFF5800D6))
     )
 }
-
 
 @Composable
 fun TituloENota(estabelecimento: String, nota: Float) {
@@ -120,10 +171,9 @@ fun TituloENota(estabelecimento: String, nota: Float) {
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp
         )
-
         Row(
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = "- $nota",
                 fontWeight = FontWeight.Bold,
@@ -131,7 +181,6 @@ fun TituloENota(estabelecimento: String, nota: Float) {
                 modifier = Modifier.padding(end = 10.dp),
                 color = Color(0xFF5800D6)
             )
-
             Image(
                 painter = painterResource(id = R.mipmap.ic_nota),
                 contentDescription = null,
@@ -140,10 +189,8 @@ fun TituloENota(estabelecimento: String, nota: Float) {
                     .size(15.dp)
             )
         }
-
     }
 }
-
 
 @Composable
 fun DescricaoDoEstabelecimento(descricao: String) {
@@ -154,116 +201,79 @@ fun DescricaoDoEstabelecimento(descricao: String) {
 }
 
 @Composable
-fun Avaliacoes() {
-
-    repeat(1) {
-        AvaliacaoCard(url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvBqW2mFZKxv6Ap__3JOeSf0to24zpawpUTLb_rJC30w&s")
-        Spacer(modifier = Modifier.height(16.dp))
+fun Avaliacoes(avaliacoes: List<AvaliacaoDTO>) {
+    Column {
+        for (avaliacao in avaliacoes) {
+            AvaliacaoCard(avaliacao)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
 
 @Composable
-fun AvaliacaoCard(url: String) {
-
-    val pessoaComentario = pessoaFisica(
-        nome = "Tamiris Janilda",
-        comentario = "Explorando as últimas tendências em IA e Big Data",
-        dtComentario = "18/09/2023"
+fun AvaliacaoCard(avaliacao: AvaliacaoDTO) {
+    val pessoaComentario = PessoaFisica(
+        nome = avaliacao.nomeAvaliador,
+        comentario = avaliacao.comentario,
+        dtComentario = "06-06-2024"
     )
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
+            .background(Color.White, RoundedCornerShape(8.dp))
             .graphicsLayer {
                 shadowElevation = 8.dp.toPx()
-                shape = RoundedCornerShape(8.dp)
                 clip = true
                 translationX = -4.dp.toPx()
                 translationY = 6.dp.toPx()
             }
-            .background(Color.White)
     ) {
         Row(
             modifier = Modifier.padding(8.dp)
         ) {
-
             AsyncImage(
-                model = url,
+                model = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvBqW2mFZKxv6Ap__3JOeSf0to24zpawpUTLb_rJC30w&s",
                 contentDescription = "Image",
-                contentScale = ContentScale.None,
-                modifier = Modifier.size(37.dp))
-
+                modifier = Modifier.size(37.dp)
+            )
             Spacer(modifier = Modifier.width(16.dp))
-
             Column {
-
                 Row {
-
                     Text(
                         text = pessoaComentario.nome ?: "",
-                        style = TextStyle(fontSize = 16.sp)
+                        fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.width(100.dp))
-
                     Row {
-
+                        repeat(avaliacao.nota.toInt()) {
+                            Image(
+                                painter = painterResource(R.mipmap.ic_nota),
+                                contentDescription = null,
+                                modifier = Modifier.size(10.dp)
+                            )
+                            Spacer(modifier = Modifier.width(2.dp))
+                        }
                         Image(
-                            painter = painterResource(R.mipmap.ic_nota),
+                            painter = painterResource(R.mipmap.ic_nota_cinza),
                             contentDescription = null,
-                            modifier = Modifier
-                                .padding(end = 2.dp)
-                                .size(10.dp)
-                        )
-
-                        Image(
-                            painter = painterResource(id = R.mipmap.ic_nota),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(end = 2.dp)
-                                .size(10.dp)
-                        )
-
-                        Image(
-                            painter = painterResource(id = R.mipmap.ic_nota),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(end = 2.dp)
-                                .size(10.dp)
-                        )
-
-                        Image(
-                            painter = painterResource(id = R.mipmap.ic_nota),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(end = 2.dp)
-                                .size(10.dp)
-                        )
-
-                        Image(
-                            painter = painterResource(id = R.mipmap.ic_nota_cinza),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(10.dp)
+                            modifier = Modifier.size(10.dp)
                         )
                     }
-
                 }
-
                 Text(
-                    text = "${pessoaComentario.comentario ?: ""}",
-                    style = TextStyle(fontSize = 14.sp)
+                    text = pessoaComentario.comentario ?: "",
+                    fontSize = 14.sp
                 )
-
                 Spacer(modifier = Modifier.height(8.dp))
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = pessoaComentario.dtComentario ?: "",
-                        style = TextStyle(fontSize = 14.sp, color = Color(0xFF5800D6)),
+                        fontSize = 14.sp,
+                        color = Color(0xFF5800D6),
                         modifier = Modifier.padding(start = 195.dp)
                     )
                 }
@@ -272,10 +282,7 @@ fun AvaliacaoCard(url: String) {
     }
 }
 
-
-
-
-data class pessoaFisica (
+data class PessoaFisica(
     val nome: String?,
     val comentario: String?,
     val dtComentario: String?
@@ -284,9 +291,5 @@ data class pessoaFisica (
 @Preview(showBackground = true)
 @Composable
 fun TelaAvaliacaoPreview() {
-    TelaAvaliacao()
+    TelaAvaliacao(emptyList())
 }
-
-
-
-

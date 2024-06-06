@@ -42,27 +42,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="19b08ade-ed3d-4dd8-a939-0b93b80bc8e6" name="Changes" comment="versão semifinal">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/classes/ViewModel/EmpresaViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/classes/entidades/EmpresaFullDTO.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/mapa/MapPickerLauncher.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/xml/backup_rules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/xml/data_extraction_rules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher_a.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher_a.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher_a.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher_a.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leku/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/leku/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leku/src/androidTest/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/leku/src/androidTest/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leku/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/leku/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/api/ApiPridePoints.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/api/ApiPridePoints.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/classes/ViewModel/AvaliacaoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/classes/ViewModel/AvaliacaoViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/MinhaAvaliacoes.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/MinhaAvaliacoes.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/TelaViewAvaliacao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/TelaViewAvaliacao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/telaAvaliacao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/telaAvaliacao.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leku/src/main/java/com/adevinta/leku/LocationPickerActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/leku/src/main/java/com/adevinta/leku/LocationPickerActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leku/src/main/res/layout/leku_activity_location_picker.xml" beforeDir="false" afterPath="$PROJECT_DIR$/leku/src/main/res/layout/leku_activity_location_picker.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +61,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\dssilva21\.android\avd\Medium_Phone_API_30.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[19f94242]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -83,12 +72,7 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Leku" type="f1a62948:ProjectNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -126,7 +110,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "last_opened_file_path": "C:/Users/dssilva21/OneDrive - Stefanini/Desktop/Nova pasta/teste/Kotlin",
+    "last_opened_file_path": "C:/Users/dssilva21/OneDrive - Stefanini/Desktop/Nova pasta/finalizacaoKotlin/Kotlin",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2"
@@ -134,7 +118,7 @@
 }]]></component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
-      <module name="Leku.app.main" />
+      <module name="Kotlin.app.main" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
       <option name="DEPLOY_AS_INSTANT" value="false" />
@@ -152,7 +136,7 @@
       <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
       <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
       <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="DEBUGGER_TYPE" value="Java" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
       <Auto>
         <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
         <option name="SHOW_STATIC_VARS" value="true" />

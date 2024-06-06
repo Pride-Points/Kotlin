@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mapbox.plugin:maps-attribution:11.3.1@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/61ba2a758ea4f6b37cf00ddaaead6242/transformed/maps-attribution-11.3.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/61ba2a758ea4f6b37cf00ddaaead6242/transformed/maps-attribution-11.3.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/61ba2a758ea4f6b37cf00ddaaead6242/transformed/maps-attribution-11.3.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.plugin/maps-attribution/11.3.1/b3ae74c457719e407be60f85bf608bf74ac843bd/maps-attribution-11.3.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.plugin/maps-attribution/11.3.1/9b1fb0a093c0a596894e3fb74c72777ab75c062d/maps-attribution-11.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -31,6 +31,11 @@ interface Apipridepoints {
 
     @GET("/avaliacoes/{idEmpresa}")
     suspend fun getAvaliacoesByEmpresaId(@Path("idEmpresa") idEmpresa: Int): Response<List<AvaliacaoDTO>>
+    @GET("/avaliacoes/{idEmpresa}")
+    suspend fun getAvaliacoesByEmpresaId2(
+        @Path("idEmpresa") idEmpresa: Int
+    ): Response<List<AvaliacaoDTO>>
+
 
     @PUT("/avaliacoes/{idAvaliacao}/{idUsuario}/{idEmpresa}")
     suspend fun updateAvaliacao(
@@ -40,6 +45,7 @@ interface Apipridepoints {
         @Header("Authorization") token: String,
         @Body novaAvaliacao: AvaliacaoDTO
     ): Response<AvaliacaoDTO>
+
 
 
     @DELETE("/avaliacoes/{idAvaliacao}")

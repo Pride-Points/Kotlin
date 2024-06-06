@@ -302,7 +302,16 @@ class LocationPickerActivity :
         }
     }
 
-
+    private fun navigateToTelaAvaliar(empresaId: Long) {
+        val intent = Intent().apply {
+            action = "com.adevinta.mappicker.ACTION_VIEW_DETAILS"
+            putExtra(LATITUDE, currentLocation?.latitude)
+            putExtra(LONGITUDE, currentLocation?.longitude)
+            putExtra("EMPRESA_ID", empresaId)
+        }
+        startActivity(intent)
+        track(TrackEvents.SIMPLE_ON_LOCALIZE_BY_POI)
+    }
 
     private suspend fun getCoordinatesFromAddress(context: Context, address: String): LatLng? {
         return withContext(Dispatchers.IO) {
@@ -767,12 +776,19 @@ class LocationPickerActivity :
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        if (map == null) {
-            map = googleMap
-            setMapStyle()
+        map = googleMap
+        map?.let {
             setDefaultMapSettings()
             setCurrentPositionLocation()
             setPois()
+
+            it.setOnMarkerClickListener { marker ->
+                val empresaId = marker.tag as? Long
+                empresaId?.let {
+                    navigateToTelaAvaliar(it)
+                }
+                true
+            }
         }
     }
 

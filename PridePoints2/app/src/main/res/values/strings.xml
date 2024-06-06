@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Pride Points</string>
+    <string name="title_activity_maps">maps</string>
+
 </resources>

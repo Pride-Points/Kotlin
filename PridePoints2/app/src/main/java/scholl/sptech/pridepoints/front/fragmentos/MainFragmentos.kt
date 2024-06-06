@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints.fragmentos
+package scholl.sptech.pridepoints.front.fragmentos
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

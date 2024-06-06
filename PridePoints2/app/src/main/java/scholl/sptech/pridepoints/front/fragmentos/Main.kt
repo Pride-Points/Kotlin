@@ -1,4 +1,4 @@
-package scholl.sptech.pridepoints
+package scholl.sptech.pridepoints.front.fragmentos
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -31,12 +31,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import scholl.sptech.pridepoints.fragmentos.HomeScreen
-import scholl.sptech.pridepoints.fragmentos.MainFragmentos
-import scholl.sptech.pridepoints.fragmentos.MapScreen
-import scholl.sptech.pridepoints.fragmentos.MenuItem
-import scholl.sptech.pridepoints.fragmentos.MyReviewScreen
-import scholl.sptech.pridepoints.fragmentos.ProfileScreen
+import scholl.sptech.pridepoints.R
 import scholl.sptech.pridepoints.ui.theme.PridePointsTheme
 
 

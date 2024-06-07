@@ -75,6 +75,8 @@
           />
     </activity>
     <activity android:name=".front.telasInscricao.Login"></activity>
+    <activity android:name=".front.avaliacoes.TelaCriacao"></activity>
+
     <activity android:name=".front.telasInscricao.Cadastro"></activity>
     <activity android:name=".front.TelaInicialUsuario"
         android:parentActivityName=".MainActivity">

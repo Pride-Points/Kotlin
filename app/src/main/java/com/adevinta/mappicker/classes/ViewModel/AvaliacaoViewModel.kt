@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.adevinta.mappicker.api.RetrofitService
 import com.adevinta.mappicker.classes.DataStorage.DataStoreManager
+import com.adevinta.mappicker.classes.entidades.AvaliacaoCriacaoDTO
 import com.adevinta.mappicker.classes.entidades.AvaliacaoDTO
 
 class AvaliacaoViewModel : ViewModel() {
@@ -27,7 +28,7 @@ class AvaliacaoViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val avaliacoesList = response.body()
                     if (avaliacoesList != null) {
-                        avaliacoes.postValue(avaliacoesList)
+                        avaliacoes.postValue(avaliacoesList!!)
                     } else {
                         avaliacoes.postValue(emptyList())
                     }
@@ -72,7 +73,8 @@ class AvaliacaoViewModel : ViewModel() {
         }
     }
 
-    fun criarAvaliacao(context: Context, avaliacao: AvaliacaoDTO, idEmpresa: Long, onSuccess: () -> Unit, onError: (String) -> Unit) {
+
+    fun criarAvaliacao(context: Context, avaliacao: AvaliacaoCriacaoDTO, idEmpresa: Long, onSuccess: () -> Unit, onError: (String) -> Unit) {
         val dataStoreManager = DataStoreManager(context)
 
         viewModelScope.launch {
@@ -81,31 +83,38 @@ class AvaliacaoViewModel : ViewModel() {
                 val idUsuario = dataStoreManager.userId.first()
 
                 if (token != null && idUsuario != null) {
-                    val response = api.postAvaliacao(avaliacao, idEmpresa, idUsuario)
+                    val response = api.postAvaliacao(avaliacao, idEmpresa, idUsuario, "Bearer $token")
                     if (response.isSuccessful) {
+                        Log.d("api", "Avaliação criada com sucesso: ${response.body()}")
                         withContext(Dispatchers.Main) {
                             onSuccess()
                         }
                     } else {
-                        Log.e("api", "Erro ao criar avaliação")
+                        val errorMessage = response.errorBody()?.string() ?: "Erro desconhecido"
+                        Log.e("api", "Erro ao criar avaliação: $errorMessage")
+                        val errorM = idUsuario.toString() + idEmpresa.toString() + avaliacao.toString() + token.toString()
+                        Log.e("API", errorM)
                         withContext(Dispatchers.Main) {
-                            onError(response.errorBody()?.string() ?: "Erro desconhecido")
+                            onError(errorMessage)
                         }
                     }
                 } else {
-                    Log.e("api", "Token ou ID do usuário não encontrados")
+                    val errorMessage = "Token ou ID do usuário não encontrados"
+                    Log.e("api", errorMessage)
                     withContext(Dispatchers.Main) {
-                        onError("Token ou ID do usuário não encontrados")
+                        onError(errorMessage)
                     }
                 }
             } catch (e: Exception) {
-                Log.e("api", "Exceção ao criar avaliação: ${e.message}")
+                val errorMessage = e.message ?: "Erro desconhecido"
+                Log.e("api", "Exceção ao criar avaliação: $errorMessage")
                 withContext(Dispatchers.Main) {
-                    onError(e.message ?: "Erro desconhecido")
+                    onError(errorMessage)
                 }
             }
         }
     }
+
 
     fun removerAvaliacao(context: Context, idAvaliacao: Long) {
         val dataStoreManager = DataStoreManager(context)

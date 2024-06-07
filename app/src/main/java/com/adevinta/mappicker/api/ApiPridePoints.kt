@@ -1,5 +1,6 @@
 package com.adevinta.mappicker.api
 
+import com.adevinta.mappicker.avaliacoes.AvaliacaoViewModel
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -11,6 +12,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import com.adevinta.mappicker.classes.entidades.Avaliacao
+import com.adevinta.mappicker.classes.entidades.AvaliacaoCriacaoDTO
 import com.adevinta.mappicker.classes.entidades.AvaliacaoDTO
 import com.adevinta.mappicker.classes.entidades.Credenciais
 import com.adevinta.mappicker.classes.entidades.EmpresaFullDTO
@@ -78,10 +80,12 @@ interface Apipridepoints {
 
     @POST("/avaliacoes/{empresaId}/{usuarioId}")
     suspend fun postAvaliacao(
-        @Body avaliacaoCriacaoDTO: AvaliacaoDTO,
+        @Body avaliacao: AvaliacaoCriacaoDTO,
         @Path("empresaId") empresaId: Long,
-        @Path("usuarioId") usuarioId: Long
+        @Path("usuarioId") usuarioId: Long,
+        @Header("Authorization") token: String
     ): Response<AvaliacaoDTO>
+
 
     @POST("/users/login")
     suspend fun login(@Body credenciais: Credenciais): Response<UsuarioToken>

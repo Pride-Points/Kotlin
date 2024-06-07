@@ -1,6 +1,7 @@
 package com.adevinta.mappicker.front.avaliacoes
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -8,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -29,8 +31,10 @@ import com.adevinta.mappicker.R
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Observer
 import coil.compose.AsyncImage
+import com.adevinta.mappicker.MainActivity
 import com.adevinta.mappicker.avaliacoes.AvaliacaoViewModel
 import com.adevinta.mappicker.classes.entidades.AvaliacaoDTO
 
@@ -63,6 +67,8 @@ class TelaAvaliacaoActivity : ComponentActivity() {
 
 @Composable
 fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,7 +83,11 @@ fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>) {
             TituloENota(estabelecimento = "Nome do Estabelecimento", nota = avaliacoes[0].nota.toFloat())
             DescricaoDoEstabelecimento(descricao = "Horario de funcionamento: 08:00 - 18:00")
             Button(
-                onClick = { /* Ação ao clicar no botão */ },
+                onClick = {
+                    val intent = Intent(context, TelaCriacao::class.java)
+                    context.startActivity(intent)
+
+                          },
                 modifier = Modifier
                     .padding(top = 1.dp)
                     .width(130.dp),
@@ -97,7 +107,10 @@ fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>) {
             TituloENota(estabelecimento = "Nome do Estabelecimento", 0.toFloat())
             DescricaoDoEstabelecimento(descricao = "Horario de funcionamento: 08:00 - 18:00")
             Button(
-                onClick = { /* Ação ao clicar no botão */ },
+                onClick = {
+                    val intent = Intent(context, TelaCriacao::class.java)
+                    context.startActivity(intent)
+                          },
                 modifier = Modifier
                     .padding(top = 1.dp)
                     .width(130.dp),
@@ -127,6 +140,8 @@ fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>) {
 
 @Composable
 fun TopoDaTela() {
+    val context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -138,7 +153,12 @@ fun TopoDaTela() {
             Image(
                 painter = painterResource(id = R.mipmap.seta_esquerda),
                 contentDescription = null,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier
+                    .size(32.dp)
+                    .clickable {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    }
             )
             Text(
                 text = "Avaliações",
@@ -149,6 +169,7 @@ fun TopoDaTela() {
         }
     }
 }
+
 
 @Composable
 fun LinhaRoxa() {

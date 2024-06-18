@@ -15,7 +15,7 @@ import com.adevinta.mappicker.classes.entidades.AvaliacaoDTO
 
 class AvaliacaoViewModel : ViewModel() {
 
-    val avaliacoes = MutableLiveData<List<AvaliacaoDTO>>()
+    val avaliacoes = MutableLiveData<List<AvaliacaoDTO>>(emptyList())
     val erroApi = MutableLiveData<String>()
 
     private val api = RetrofitService.getApipridepointsService()

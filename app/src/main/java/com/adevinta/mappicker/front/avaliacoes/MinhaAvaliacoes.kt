@@ -140,7 +140,7 @@ fun MinhasAvaliacoes(avaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
     }
 
     Column {
-        if (avals.isEmpty()) {
+        if (avals.isNullOrEmpty()) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -177,180 +177,184 @@ fun MinhasAvaliacoes(avaliacaoViewModel: AvaliacaoViewModel = AvaliacaoViewModel
             LazyColumn(modifier = Modifier
                 .heightIn(min = 100.dp, max = 550.dp)
                 .fillMaxWidth()) {
-                items(items = avals) { aval ->
-                    var isExpanded by remember { mutableStateOf(false) }
-                    var showDialogEdit by remember { mutableStateOf(false) }
-                    var showDialogDelete by remember { mutableStateOf(false) }
-                    var selectedItem by remember { mutableStateOf<AvaliacaoDTO?>(null) }
+                if(avals.isNullOrEmpty()){
 
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .fillMaxWidth(0.9f)
-                                .shadow(5.dp, shape = RoundedCornerShape(4.dp), clip = true)
+                }else{
+                    items(items = avals) { aval ->
+                        var isExpanded by remember { mutableStateOf(false) }
+                        var showDialogEdit by remember { mutableStateOf(false) }
+                        var showDialogDelete by remember { mutableStateOf(false) }
+                        var selectedItem by remember { mutableStateOf<AvaliacaoDTO?>(null) }
+
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.fillMaxWidth()
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-                                    .background(Color.White)
-                                    .padding(8.dp)
+                                    .padding(10.dp)
+                                    .fillMaxWidth(0.9f)
+                                    .shadow(5.dp, shape = RoundedCornerShape(4.dp), clip = true)
                             ) {
-                                Column(
-                                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+                                        .background(Color.White)
+                                        .padding(8.dp)
                                 ) {
-                                    val contexto = LocalContext.current
-
-                                    Row(modifier = Modifier.fillMaxWidth()) {
-                                        Text(
-                                            text = aval.nomeAvaliador ?: "",
-                                            style = TextStyle(
-                                                fontWeight = FontWeight.Bold,
-                                                fontSize = 16.sp
-                                            )
-                                        )
-                                        Spacer(modifier = Modifier.weight(1f))
-
-                                        val totalEstrelas = 5
-                                        val estrelasAmarelas = aval.nota.toInt()
-                                        val estrelasCinza = totalEstrelas - estrelasAmarelas
-                                        Row {
-                                            repeat(estrelasAmarelas) {
-                                                Image(
-                                                    painter = painterResource(id = R.mipmap.estrela_amarela),
-                                                    contentDescription = "Estrela Amarela",
-                                                    modifier = Modifier.size(15.dp)
-                                                )
-                                            }
-
-                                            repeat(estrelasCinza) {
-                                                Image(
-                                                    painter = painterResource(id = R.mipmap.estrela_cinza),
-                                                    contentDescription = "Estrela Cinza",
-                                                    modifier = Modifier.size(15.dp)
-                                                )
-                                            }
-                                        }
-                                    }
-
-                                    // Ver mais e limitação de caracteres
-                                    val maxPreviewLength = 50
-                                    val textToShow =
-                                        if (isExpanded || aval.comentario!!.length <= maxPreviewLength) {
-                                            aval.comentario
-                                        } else {
-                                            "${aval.comentario!!.take(maxPreviewLength)}... "
-                                        }
-                                    val annotatedText = buildAnnotatedString {
-                                        append(textToShow)
-                                        if (!isExpanded && aval.comentario!!.length > maxPreviewLength) {
-                                            withStyle(
-                                                style = SpanStyle(
-                                                    color = Color(0xFF5800D6),
-                                                    fontWeight = FontWeight.Bold
-                                                )
-                                            ) {
-                                                append("Ver mais")
-                                            }
-                                        }
-                                    }
-
-                                    ClickableText(
-                                        text = annotatedText,
-                                        onClick = { offset ->
-                                            if (offset in textToShow!!.length until annotatedText.length) {
-                                                isExpanded = true
-                                            }
-                                        },
-                                        style = TextStyle(fontSize = 14.sp)
-                                    )
-
-                                    Row(
-                                        verticalAlignment = Alignment.Bottom,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(8.dp)
+                                    Column(
+                                        verticalArrangement = Arrangement.spacedBy(4.dp)
                                     ) {
+                                        val contexto = LocalContext.current
 
-                                        // Ver menos
-                                        if (isExpanded) {
-                                            Button(
-                                                onClick = { isExpanded = false },
-                                                colors = ButtonDefaults.buttonColors(Color.Transparent),
-                                                contentPadding = PaddingValues(0.dp),
-                                                elevation = ButtonDefaults.buttonElevation(
-                                                    defaultElevation = 0.dp,
-                                                    pressedElevation = 0.dp,
-                                                    hoveredElevation = 0.dp,
-                                                    focusedElevation = 0.dp
+                                        Row(modifier = Modifier.fillMaxWidth()) {
+                                            Text(
+                                                text = aval.nomeAvaliador ?: "",
+                                                style = TextStyle(
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 16.sp
                                                 )
-                                            ) {
-                                                Text("Ver menos", color = Color(0xFF5800D6))
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+
+                                            val totalEstrelas = 5
+                                            val estrelasAmarelas = aval.nota.toInt()
+                                            val estrelasCinza = totalEstrelas - estrelasAmarelas
+                                            Row {
+                                                repeat(estrelasAmarelas) {
+                                                    Image(
+                                                        painter = painterResource(id = R.mipmap.estrela_amarela),
+                                                        contentDescription = "Estrela Amarela",
+                                                        modifier = Modifier.size(15.dp)
+                                                    )
+                                                }
+
+                                                repeat(estrelasCinza) {
+                                                    Image(
+                                                        painter = painterResource(id = R.mipmap.estrela_cinza),
+                                                        contentDescription = "Estrela Cinza",
+                                                        modifier = Modifier.size(15.dp)
+                                                    )
+                                                }
                                             }
                                         }
 
-                                        Spacer(modifier = Modifier.weight(1f))
-
-                                        Image(
-                                            painter = painterResource(id = R.mipmap.editar_avaliacao),
-                                            contentDescription = "editar",
-                                            Modifier
-                                                .size(27.dp)
-                                                .clickable {
-                                                    showDialogEdit = true
-                                                    selectedItem = aval
+                                        // Ver mais e limitação de caracteres
+                                        val maxPreviewLength = 50
+                                        val textToShow =
+                                            if (isExpanded || aval.comentario!!.length <= maxPreviewLength) {
+                                                aval.comentario
+                                            } else {
+                                                "${aval.comentario!!.take(maxPreviewLength)}... "
+                                            }
+                                        val annotatedText = buildAnnotatedString {
+                                            append(textToShow)
+                                            if (!isExpanded && aval.comentario!!.length > maxPreviewLength) {
+                                                withStyle(
+                                                    style = SpanStyle(
+                                                        color = Color(0xFF5800D6),
+                                                        fontWeight = FontWeight.Bold
+                                                    )
+                                                ) {
+                                                    append("Ver mais")
                                                 }
-                                        )
-
-                                        Image(
-                                            painter = painterResource(id = R.mipmap.linha_avaliacao),
-                                            contentDescription = "linha",
-                                            Modifier.size(27.dp)
-                                        )
-
-                                        Image(
-                                            painter = painterResource(id = R.mipmap.deletar_avaliacao),
-                                            contentDescription = "delete",
-                                            Modifier
-                                                .size(27.dp)
-                                                .clickable {
-                                                    showDialogDelete = true
-                                                    selectedItem = aval
-                                                }
-                                        )
-
-                                        if (showDialogDelete) {
-                                            ModalDeletar(
-                                                showDialogDelete = showDialogDelete,
-                                                onCloseDialog = { showDialogDelete = false },
-                                                onConfirmDialog = {
-                                                    selectedItem?.id?.let { id ->
-                                                        avaliacaoViewModel.removerAvaliacao(context, id)
-                                                    }
-                                                    showDialogDelete = false
-                                                }
-                                            )
+                                            }
                                         }
 
-                                        if (showDialogEdit) {
-                                            ModalEditar(
-                                                showDialogEdit = showDialogEdit,
-                                                onCloseDialog = { showDialogEdit = false },
-                                                onConfirmDialog = {
-                                                    selectedItem?.let {
-                                                        val telaEdit = Intent(
-                                                            contexto,
-                                                            TelaEdicao::class.java
-                                                        )
-                                                        telaEdit.putExtra("itemSelecionado", it)
-                                                        contexto.startActivity(telaEdit)
-                                                    }
+                                        ClickableText(
+                                            text = annotatedText,
+                                            onClick = { offset ->
+                                                if (offset in textToShow!!.length until annotatedText.length) {
+                                                    isExpanded = true
                                                 }
+                                            },
+                                            style = TextStyle(fontSize = 14.sp)
+                                        )
+
+                                        Row(
+                                            verticalAlignment = Alignment.Bottom,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(8.dp)
+                                        ) {
+
+                                            // Ver menos
+                                            if (isExpanded) {
+                                                Button(
+                                                    onClick = { isExpanded = false },
+                                                    colors = ButtonDefaults.buttonColors(Color.Transparent),
+                                                    contentPadding = PaddingValues(0.dp),
+                                                    elevation = ButtonDefaults.buttonElevation(
+                                                        defaultElevation = 0.dp,
+                                                        pressedElevation = 0.dp,
+                                                        hoveredElevation = 0.dp,
+                                                        focusedElevation = 0.dp
+                                                    )
+                                                ) {
+                                                    Text("Ver menos", color = Color(0xFF5800D6))
+                                                }
+                                            }
+
+                                            Spacer(modifier = Modifier.weight(1f))
+
+                                            Image(
+                                                painter = painterResource(id = R.mipmap.editar_avaliacao),
+                                                contentDescription = "editar",
+                                                Modifier
+                                                    .size(27.dp)
+                                                    .clickable {
+                                                        showDialogEdit = true
+                                                        selectedItem = aval
+                                                    }
                                             )
+
+                                            Image(
+                                                painter = painterResource(id = R.mipmap.linha_avaliacao),
+                                                contentDescription = "linha",
+                                                Modifier.size(27.dp)
+                                            )
+
+                                            Image(
+                                                painter = painterResource(id = R.mipmap.deletar_avaliacao),
+                                                contentDescription = "delete",
+                                                Modifier
+                                                    .size(27.dp)
+                                                    .clickable {
+                                                        showDialogDelete = true
+                                                        selectedItem = aval
+                                                    }
+                                            )
+
+                                            if (showDialogDelete) {
+                                                ModalDeletar(
+                                                    showDialogDelete = showDialogDelete,
+                                                    onCloseDialog = { showDialogDelete = false },
+                                                    onConfirmDialog = {
+                                                        selectedItem?.id?.let { id ->
+                                                            avaliacaoViewModel.removerAvaliacao(context, id)
+                                                        }
+                                                        showDialogDelete = false
+                                                    }
+                                                )
+                                            }
+
+                                            if (showDialogEdit) {
+                                                ModalEditar(
+                                                    showDialogEdit = showDialogEdit,
+                                                    onCloseDialog = { showDialogEdit = false },
+                                                    onConfirmDialog = {
+                                                        selectedItem?.let {
+                                                            val telaEdit = Intent(
+                                                                contexto,
+                                                                TelaEdicao::class.java
+                                                            )
+                                                            telaEdit.putExtra("itemSelecionado", it)
+                                                            contexto.startActivity(telaEdit)
+                                                        }
+                                                    }
+                                                )
+                                            }
                                         }
                                     }
                                 }

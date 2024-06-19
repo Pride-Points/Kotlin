@@ -2,6 +2,7 @@ package com.adevinta.mappicker.front.avaliacoes
 
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -47,6 +48,7 @@ import com.adevinta.mappicker.R
 import com.adevinta.mappicker.avaliacoes.AvaliacaoViewModel
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Observer
 import com.adevinta.mappicker.classes.entidades.AvaliacaoCriacaoDTO
 
@@ -55,10 +57,12 @@ class TelaCriacao : ComponentActivity() {
     private val viewModel: AvaliacaoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        var empresaId = intent.getLongExtra("EMPRESA_ID2", -1)
 
         super.onCreate(savedInstanceState)
-        val empresaId = 1.toLong();
-
+        if(empresaId.equals(-1)){
+            empresaId = 1.toLong()
+        }
         viewModel.carregarAvaliacoesDaEmpresa(this, empresaId)
 
         viewModel.avaliacoes.observe(this, Observer { avaliacoes ->
@@ -78,6 +82,8 @@ class TelaCriacao : ComponentActivity() {
 }
     @Composable
     fun TelaCriacao(activity: Activity, avaliacaoViewModel: AvaliacaoViewModel, empresaId: Long) {
+        val context = LocalContext.current
+
         val text = buildAnnotatedString {
             append("Como foi sua ")
             withStyle(style = SpanStyle(color = Color(0xFF5800D6))) {
@@ -260,7 +266,11 @@ class TelaCriacao : ComponentActivity() {
                     avaliacao = novaEdit,
                     idEmpresa = empresaId,
                     onSuccess = {
-                        activity.finish()
+
+                        val intent = Intent(context, TelaAvaliacaoActivity::class.java).apply {
+                            putExtra("EMPRESA_ID", empresaId)
+                        }
+                        context.startActivity(intent)
                     },
                     onError = { errorMessage ->
                         val errorM = novaEdit.toString() + empresaId.toString()

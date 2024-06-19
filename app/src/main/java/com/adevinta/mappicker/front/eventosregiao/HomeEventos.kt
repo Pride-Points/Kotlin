@@ -157,7 +157,7 @@ fun EventCard(evento: EventosRegiao) {
 
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Text(evento.dtEvento.toString(), color = Color(0xFF5800D6))
+                Text("20-06-2024", color = Color(0xFF5800D6))
             }
         }
     }

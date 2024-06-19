@@ -22,24 +22,25 @@ import com.adevinta.mappicker.classes.entidades.UsuarioCadastro
 import com.adevinta.mappicker.classes.entidades.UsuarioToken
 
 interface Apipridepoints {
-    @GET("/empresas/{id}")
+    @GET("empresas/{id}")
     suspend fun buscarPorId(@Path("id") id: Long): Response<EmpresaFullDTO>
 
-    @GET("/eventos")
+    @GET("eventos")
     suspend fun get(): Response<List<EventosRegiao>>
 
-    @GET("/avaliacoes")
+    @GET("avaliacoes")
     suspend fun getAvaliacoes(): Response<List<Avaliacao>>
 
-    @GET("/avaliacoes/{idEmpresa}")
+    @GET("avaliacoes/{idEmpresa}")
     suspend fun getAvaliacoesByEmpresaId(@Path("idEmpresa") idEmpresa: Int): Response<List<AvaliacaoDTO>>
-    @GET("/avaliacoes/{idEmpresa}")
+    @GET("avaliacoes/{idEmpresa}")
     suspend fun getAvaliacoesByEmpresaId2(
-        @Path("idEmpresa") idEmpresa: Int
+        @Path("idEmpresa") idEmpresa: Int,
+        @Header("Authorization") token: String
     ): Response<List<AvaliacaoDTO>>
 
 
-    @PUT("/avaliacoes/{idAvaliacao}/{idUsuario}/{idEmpresa}")
+    @PUT("avaliacoes/{idAvaliacao}/{idUsuario}/{idEmpresa}")
     suspend fun updateAvaliacao(
         @Path("idAvaliacao") idAvaliacao: Int,
         @Path("idUsuario") idUsuario: Int,
@@ -50,35 +51,35 @@ interface Apipridepoints {
 
 
 
-    @DELETE("/avaliacoes/{idAvaliacao}")
+    @DELETE("avaliacoes/{idAvaliacao}")
     suspend fun deleteAvaliacao(
         @Path("idAvaliacao") idAvaliacao: Int,
         @Header("Authorization") token: String
     ): Response<Unit>
 
-    @GET("/users/imagem-perfil/{idUser}")
+    @GET("users/imagem-perfil/{idUser}")
     suspend fun getUserimage(@Path("iduser") idUser: Long): Response<ImagemPerfil>
 
 
-    @POST("/users/imagem-perfil/{idUser}")
+    @POST("users/imagem-perfil/{idUser}")
     suspend fun patchUserImage(
         @Path("idUser") idUser: Long,
         @Body imagemPerfil: ImagemPerfil,
     ): Response<ImagemPerfil>
 
-    @GET("/avaliacoes/usuario/{idUsuario}")
+    @GET("avaliacoes/usuario/{idUsuario}")
     suspend fun getAvaliacoesUsuario(
         @Path("idUsuario") idUsuario: Long,
         @Header("Authorization") token: String
     ): Response<List<AvaliacaoDTO>>
 
-    @GET("/avaliacoes/usuario/{idUsuario}")
+    @GET("avaliacoes/usuario/{idUsuario}")
     suspend fun listarAvaliacoesDoUsuario(
         @Path("idUsuario") idUsuario: Long,
         @Header("Authorization") token: String
     ): Response<List<AvaliacaoDTO>>
 
-    @POST("/avaliacoes/{empresaId}/{usuarioId}")
+    @POST("avaliacoes/{empresaId}/{usuarioId}")
     suspend fun postAvaliacao(
         @Body avaliacao: AvaliacaoCriacaoDTO,
         @Path("empresaId") empresaId: Long,
@@ -87,14 +88,14 @@ interface Apipridepoints {
     ): Response<AvaliacaoDTO>
 
 
-    @POST("/users/login")
+    @POST("users/login")
     suspend fun login(@Body credenciais: Credenciais): Response<UsuarioToken>
 
 
-    @POST("/users")
+    @POST("users")
     suspend fun cadastrarUsuario(@Body usuarioCadastro: UsuarioCadastro): Response<UsuarioToken>
 
-    @GET("/users/imagem-perfil/{idUser}")
+    @GET("users/imagem-perfil/{idUser}")
     suspend fun getUserImage(
         @Path("idUser") idUser: Long,
         @Header("Authorization") token: String

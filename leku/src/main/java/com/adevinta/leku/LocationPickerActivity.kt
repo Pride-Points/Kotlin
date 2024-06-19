@@ -44,6 +44,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.adevinta.leku.ViewModel.EmpresaViewModel
 import com.adevinta.leku.geocoder.AndroidGeocoderDataSource
 import com.adevinta.leku.geocoder.GeocoderDataSourceInterface
 import com.adevinta.leku.geocoder.GeocoderPresenter
@@ -268,7 +269,7 @@ class LocationPickerActivity :
         val dono: String?
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         updateValuesFromBundle(savedInstanceState)
         setUpContentView()
@@ -280,23 +281,33 @@ class LocationPickerActivity :
         setUpMapIfNeeded()
         setUpFloatingButtons()
         buildGoogleApiClient()
-        val empresas = listOf(
-            EmpresaFullDTO(1, "Empresa A", "123456789", " 01414-001", 594, "São Paulo, Rua Haddock Lobo", "SP", "Dono A"),
-            EmpresaFullDTO(2, "Empresa B", "987654321", " 01414-001", 595, "São Paulo, Rua Haddock Lobo", "RJ", "Dono B")
-        )
 
-        addMarkersFromEmpresas(empresas)
-        track(TrackEvents.ON_LOAD_LOCATION_PICKER)
+         lifecycleScope.launch {
+             val empresas2 = empresaViewModel.fetchEmpresas()
+                 addMarkersFromEmpresas(empresas2)
+
+         }
+
+         track(TrackEvents.ON_LOAD_LOCATION_PICKER)
     }
+    private val empresaViewModel = EmpresaViewModel() // Instantiate the ViewModel
 
-    private fun addMarkersFromEmpresas(empresas: List<EmpresaFullDTO>) {
-        empresas.forEach { empresa ->
-            val enderecoCompleto = "${empresa.cep}, ${empresa.numero}, ${empresa.cidade}, ${empresa.estado}"
-            lifecycleScope.launch {
-                val latLng = getCoordinatesFromAddress(this@LocationPickerActivity, enderecoCompleto)
-                latLng?.let {
-                    val marker = map?.addMarker(MarkerOptions().position(it).title(empresa.nomeFantasia))
-                    marker?.tag = empresa.id  // Salvar o ID da empresa no marcador
+    private fun addMarkersFromEmpresas(empresas: List<com.adevinta.leku.api.EmpresaFullDTO>?) {
+        if (empresas.isNullOrEmpty()) {
+
+        } else {
+            empresas!!.forEach { empresa ->
+                val enderecoCompleto =
+                    "${empresa.cep}, ${empresa.numero}, ${empresa.cidade}, ${empresa.estado}"
+                lifecycleScope.launch {
+                    val latLng =
+                        getCoordinatesFromAddress(this@LocationPickerActivity, enderecoCompleto)
+                    latLng?.let {
+                        val marker = map!!.addMarker(
+                            MarkerOptions().position(it).title(empresa.nomeFantasia)
+                        )
+                        marker?.tag = empresa.id  // Salvar o ID da empresa no marcador
+                    }
                 }
             }
         }

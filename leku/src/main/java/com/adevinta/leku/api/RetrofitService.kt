@@ -1,5 +1,4 @@
-package com.adevinta.mappicker.api
-
+package com.adevinta.leku.api
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

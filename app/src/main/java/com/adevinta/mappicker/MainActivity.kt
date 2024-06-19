@@ -47,8 +47,9 @@ import com.adevinta.leku.TRANSITION_BUNDLE
 import com.adevinta.leku.ZIPCODE
 import com.adevinta.leku.tracker.LocationPickerTracker
 import com.adevinta.leku.tracker.TrackEvents
+import com.adevinta.mappicker.classes.entidades.EmpresaFullDTO
 
- const val DEMO_LATITUDE = 41.4036299
+const val DEMO_LATITUDE = 41.4036299
  const val DEMO_LONGITUDE = 2.1743558
 
 public class MainActivity : AppCompatActivity() {
@@ -69,6 +70,8 @@ public class MainActivity : AppCompatActivity() {
             StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build()
         )
         StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build())
+
+
 
         setContent {
 

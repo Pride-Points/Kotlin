@@ -36,24 +36,30 @@ import androidx.lifecycle.Observer
 import coil.compose.AsyncImage
 import com.adevinta.mappicker.MainActivity
 import com.adevinta.mappicker.avaliacoes.AvaliacaoViewModel
+import com.adevinta.mappicker.classes.ViewModel.EmpresaViewModel
 import com.adevinta.mappicker.classes.entidades.AvaliacaoDTO
+import com.adevinta.mappicker.front.TelaInicialUsuario
 
 class TelaAvaliacaoActivity : ComponentActivity() {
 
     private val viewModel: AvaliacaoViewModel by viewModels()
 
+    private val viewModel2: EmpresaViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val empresaId = intent.getLongExtra("EMPRESA_ID", -1)
 
-        viewModel.carregarAvaliacoesDaEmpresa(this, empresaId)
 
+        viewModel.carregarAvaliacoesDaEmpresa(this, empresaId)
         viewModel.avaliacoes.observe(this, Observer { avaliacoes ->
             setContent {
                 if(avaliacoes.isNullOrEmpty()){
-                    TelaAvaliacao(avaliacoes = emptyList())
+                    viewModel2.buscarEmpresaPorId(empresaId)
+
+                    TelaAvaliacao(avaliacoes = emptyList(), "Suco da vandinha",empresaId)
                 }else{
-                    TelaAvaliacao(avaliacoes)
+                    TelaAvaliacao(avaliacoes, "Suco da vandinha",empresaId)
                 }
             }
         })
@@ -63,11 +69,15 @@ class TelaAvaliacaoActivity : ComponentActivity() {
 
         })
     }
+
+
+
 }
 
 @Composable
-fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>) {
+fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>,  nomeFantasia: String, empresaId:Long) {
     val context = LocalContext.current
+
 
     Column(
         modifier = Modifier
@@ -80,13 +90,14 @@ fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>) {
         Spacer(modifier = Modifier.height(40.dp))
 
         if (avaliacoes.isNotEmpty()) {
-            TituloENota(estabelecimento = "Nome do Estabelecimento", nota = avaliacoes[0].nota.toFloat())
+            TituloENota(estabelecimento = nomeFantasia, nota = avaliacoes[0].nota.toFloat())
             DescricaoDoEstabelecimento(descricao = "Horario de funcionamento: 08:00 - 18:00")
             Button(
                 onClick = {
-                    val intent = Intent(context, TelaCriacao::class.java)
+                    val intent = Intent(context, TelaCriacao::class.java).apply {
+                        putExtra("EMPRESA_ID2", empresaId)
+                    }
                     context.startActivity(intent)
-
                           },
                 modifier = Modifier
                     .padding(top = 1.dp)
@@ -104,11 +115,13 @@ fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>) {
             }
             Avaliacoes(avaliacoes)
         } else {
-            TituloENota(estabelecimento = "Nome do Estabelecimento", 0.toFloat())
+            TituloENota(estabelecimento = nomeFantasia, 0.toFloat())
             DescricaoDoEstabelecimento(descricao = "Horario de funcionamento: 08:00 - 18:00")
             Button(
                 onClick = {
-                    val intent = Intent(context, TelaCriacao::class.java)
+                    val intent = Intent(context, TelaCriacao::class.java).apply {
+                        putExtra("EMPRESA_ID2", empresaId)
+                    }
                     context.startActivity(intent)
                           },
                 modifier = Modifier
@@ -156,7 +169,7 @@ fun TopoDaTela() {
                 modifier = Modifier
                     .size(32.dp)
                     .clickable {
-                        val intent = Intent(context, MainActivity::class.java)
+                        val intent = Intent(context, TelaInicialUsuario::class.java)
                         context.startActivity(intent)
                     }
             )
@@ -236,7 +249,7 @@ fun AvaliacaoCard(avaliacao: AvaliacaoDTO) {
     val pessoaComentario = PessoaFisica(
         nome = avaliacao.nomeAvaliador,
         comentario = avaliacao.comentario,
-        dtComentario = "06-06-2024"
+        dtComentario = "20-06-2024"
     )
     Box(
         modifier = Modifier
@@ -244,7 +257,7 @@ fun AvaliacaoCard(avaliacao: AvaliacaoDTO) {
             .padding(10.dp)
             .background(Color.White, RoundedCornerShape(8.dp))
             .graphicsLayer {
-                shadowElevation = 8.dp.toPx()
+                shadowElevation = 1.dp.toPx()
                 clip = true
                 translationX = -4.dp.toPx()
                 translationY = 6.dp.toPx()
@@ -253,20 +266,21 @@ fun AvaliacaoCard(avaliacao: AvaliacaoDTO) {
         Row(
             modifier = Modifier.padding(8.dp)
         ) {
-            AsyncImage(
-                model = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvBqW2mFZKxv6Ap__3JOeSf0to24zpawpUTLb_rJC30w&s",
-                contentDescription = "Image",
-                modifier = Modifier.size(37.dp)
-            )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Row {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
                         text = pessoaComentario.nome ?: "",
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.width(100.dp))
-                    Row {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    )  {
                         repeat(avaliacao.nota.toInt()) {
                             Image(
                                 painter = painterResource(R.mipmap.ic_nota),
@@ -275,11 +289,15 @@ fun AvaliacaoCard(avaliacao: AvaliacaoDTO) {
                             )
                             Spacer(modifier = Modifier.width(2.dp))
                         }
-                        Image(
-                            painter = painterResource(R.mipmap.ic_nota_cinza),
-                            contentDescription = null,
-                            modifier = Modifier.size(10.dp)
-                        )
+                        repeat(5 - avaliacao.nota.toInt()) {
+                            Image(
+                                painter = painterResource(R.mipmap.ic_nota_cinza),
+                                contentDescription = null,
+                                modifier = Modifier.size(10.dp)
+                            )
+                            Spacer(modifier = Modifier.width(2.dp))
+                        }
+
                     }
                 }
                 Text(
@@ -289,13 +307,12 @@ fun AvaliacaoCard(avaliacao: AvaliacaoDTO) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.End
                 ) {
                     Text(
                         text = pessoaComentario.dtComentario ?: "",
                         fontSize = 14.sp,
-                        color = Color(0xFF5800D6),
-                        modifier = Modifier.padding(start = 195.dp)
+                        color = Color(0xFF5800D6)
                     )
                 }
             }
@@ -309,8 +326,33 @@ data class PessoaFisica(
     val dtComentario: String?
 )
 
+val avaliacoesDeTeste = listOf(
+    AvaliacaoDTO(
+        id = 1,
+        nota = 4.5,
+        tag = "Qualidade",
+        comentario = "Excelente atendimento e produtos de qualidade.",
+        isShared = true,
+        nomeAvaliador = "João Silva",
+        resp = "Obrigado pelo feedback!",
+        title = "Ótimo lugar",
+        idEmpresa = "123"
+    ),
+    AvaliacaoDTO(
+        id = 2,
+        nota = 3.0,
+        tag = "Preço",
+        comentario = "Preços um pouco altos, mas a qualidade compensa.",
+        isShared = true,
+        nomeAvaliador = "Maria Oliveira",
+        resp = "Vamos considerar sua sugestão.",
+        title = "Bom, mas caro",
+        idEmpresa = "123"
+    )
+)
+
 @Preview(showBackground = true)
 @Composable
 fun TelaAvaliacaoPreview() {
-    TelaAvaliacao(emptyList())
+    TelaAvaliacao(avaliacoesDeTeste, "Nome do Estabelimento" ,1)
 }

@@ -84,8 +84,7 @@
     <activity android:name=".MainActivity"></activity>
     <activity android:name=".menuitens.avaliacoes.TelaEdicao">
     </activity>
-    <activity android:name=".front.avaliacao.EmpresaSelecionada">
-    </activity>
+
 
 
   </application>

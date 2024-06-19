@@ -22,19 +22,31 @@ class AvaliacaoViewModel : ViewModel() {
     private val api = RetrofitService.getApipridepointsService()
 
     fun carregarAvaliacoesDaEmpresa(context: Context, empresaId: Long) {
+        Log.d("AD", "Empresa ID recebido: $empresaId") // Log para o ID da empresa
+        val dataStoreManager = DataStoreManager(context)
+
         viewModelScope.launch {
             try {
-                val response = api.getAvaliacoesByEmpresaId2(empresaId.toInt())
-                if (response.isSuccessful) {
-                    val avaliacoesList = response.body()
-                    if (avaliacoesList != null) {
-                        avaliacoes.postValue(avaliacoesList!!)
+                val token = dataStoreManager.token.first()
+                if (token != null) {
+                    val response = api.getAvaliacoesByEmpresaId2(empresaId.toInt(), "Bearer $token")
+                    if (response.isSuccessful) {
+                        val avaliacoesList = response.body()
+                        if (avaliacoesList != null) {
+                            avaliacoes.postValue(avaliacoesList!!)
+                        } else {
+                            Log.e("api", "A lista de avaliações é nula")
+                            avaliacoes.postValue(emptyList())
+                        }
                     } else {
-                        avaliacoes.postValue(emptyList())
+                        val errorMessage = response.errorBody()?.string() ?: "Erro desconhecido"
+                        Log.e("api", "Erro ao carregar avaliações da empresa: $errorMessage")
+                        erroApi.postValue(errorMessage)
+                        avaliacoes.postValue(emptyList()) // Adicionado para garantir que a lista vazia seja tratada
                     }
                 } else {
-                    Log.e("api", "Erro ao carregar avaliações da empresa")
-                    erroApi.postValue(response.errorBody()?.string())
+                    Log.e("api", "Token não encontrado")
+                    erroApi.postValue("Token não encontrado")
                     avaliacoes.postValue(emptyList()) // Adicionado para garantir que a lista vazia seja tratada
                 }
             } catch (e: Exception) {
@@ -175,5 +187,7 @@ class AvaliacaoViewModel : ViewModel() {
             }
         }
     }
-
+    fun recarregarAvaliacoes(context: Context, empresaId: Long) {
+        carregarAvaliacoesDaEmpresa(context, empresaId)
+    }
 }

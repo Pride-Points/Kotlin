@@ -17,8 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adevinta.mappicker.MainActivity
 import com.adevinta.mappicker.MainView
-import com.adevinta.mappicker.front.avaliacao.EmpresaScreen
-import com.adevinta.mappicker.front.avaliacao.EmpresaSelecionada
 import com.adevinta.mappicker.front.avaliacoes.TelaAvaliacao
 import com.adevinta.mappicker.front.eventosregiao.HomeEventos
 import com.adevinta.mappicker.front.perfilusuarios.TelaPerfilConfiguracao

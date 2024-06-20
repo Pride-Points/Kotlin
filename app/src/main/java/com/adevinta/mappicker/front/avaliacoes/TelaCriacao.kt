@@ -58,7 +58,12 @@ class TelaCriacao : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         var empresaId = intent.getLongExtra("EMPRESA_ID2", -1)
+        var empresaNome = intent.getStringExtra("EMPRESA_NOME2")
 
+
+        if(empresaNome.isNullOrEmpty()){
+            empresaNome = "suquinho da vandinha"
+        }
         super.onCreate(savedInstanceState)
         if(empresaId.equals(-1)){
             empresaId = 1.toLong()
@@ -70,7 +75,8 @@ class TelaCriacao : ComponentActivity() {
                 TelaCriacao(
                     activity = this,
                     avaliacaoViewModel = viewModel,
-                    empresaId = empresaId
+                    empresaId = empresaId,
+                    empresaNome = empresaNome
                 )
             }
         })
@@ -81,7 +87,7 @@ class TelaCriacao : ComponentActivity() {
     }
 }
     @Composable
-    fun TelaCriacao(activity: Activity, avaliacaoViewModel: AvaliacaoViewModel, empresaId: Long) {
+    fun TelaCriacao(activity: Activity, avaliacaoViewModel: AvaliacaoViewModel, empresaId: Long, empresaNome: String) {
         var selectedButton by remember { mutableStateOf("") }
 
         val context = LocalContext.current
@@ -178,7 +184,10 @@ class TelaCriacao : ComponentActivity() {
                             .size(120.dp, 40.dp)
                             .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
                         colors = if (selectedButton == "Amade") selectedColors else defaultColors,
-                        onClick = { selectedButton = "Amade" }
+                        onClick = {
+                            selectedButton = "Amade"
+                            novaEdit = novaEdit.copy(tag = "Amade")
+                        }
                     ) {
                         Text(text = "Amade")
                     }
@@ -188,7 +197,10 @@ class TelaCriacao : ComponentActivity() {
                             .size(120.dp, 40.dp)
                             .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
                         colors = if (selectedButton == "Brave") selectedColors else defaultColors,
-                        onClick = { selectedButton = "Brave" }
+                        onClick = {
+                            selectedButton = "Brave"
+                            novaEdit = novaEdit.copy(tag = "Brave")
+                        }
                     ) {
                         Text(text = "Brave")
                     }
@@ -205,7 +217,10 @@ class TelaCriacao : ComponentActivity() {
                             .size(120.dp, 40.dp)
                             .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
                         colors = if (selectedButton == "Acolhide") selectedColors else defaultColors,
-                        onClick = { selectedButton = "Acolhide" }
+                        onClick = {
+                            selectedButton = "Acolhide"
+                            novaEdit = novaEdit.copy(tag = "Acolhide")
+                        }
                     ) {
                         Text(text = "Acolhide")
                     }
@@ -215,7 +230,10 @@ class TelaCriacao : ComponentActivity() {
                             .size(120.dp, 40.dp)
                             .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
                         colors = if (selectedButton == "Frustrade") selectedColors else defaultColors,
-                        onClick = { selectedButton = "Frustrade" }
+                        onClick = {
+                            selectedButton = "Frustrade"
+                            novaEdit = novaEdit.copy(tag = "Frustrade")
+                        }
                     ) {
                         Text(text = "Frustrade")
                     }
@@ -232,7 +250,10 @@ class TelaCriacao : ComponentActivity() {
                             .size(120.dp, 40.dp)
                             .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
                         colors = if (selectedButton == "Feliz") selectedColors else defaultColors,
-                        onClick = { selectedButton = "Feliz" }
+                        onClick = {
+                            selectedButton = "Feliz"
+                            novaEdit = novaEdit.copy(tag = "Feliz")
+                        }
                     ) {
                         Text(text = "Feliz")
                     }
@@ -242,14 +263,16 @@ class TelaCriacao : ComponentActivity() {
                             .size(120.dp, 40.dp)
                             .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
                         colors = if (selectedButton == "Humilhade") selectedColors else defaultColors,
-                        onClick = { selectedButton = "Humilhade" }
+                        onClick = {
+                            selectedButton = "Humilhade"
+                            novaEdit = novaEdit.copy(tag = "Humilhade")
+                        }
                     ) {
                         Text(text = "Humilhade")
                     }
                 }
             }
-
-        Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             OutlinedTextField(
                 label = { Text(text = "Comentário") },
@@ -268,6 +291,7 @@ class TelaCriacao : ComponentActivity() {
 
                         val intent = Intent(context, TelaAvaliacaoActivity::class.java).apply {
                             putExtra("EMPRESA_ID", empresaId)
+                            putExtra("EMPRESA_NOME", empresaNome)
                         }
                         context.startActivity(intent)
                     },

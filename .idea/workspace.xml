@@ -43,11 +43,8 @@
   <component name="ChangeListManager">
     <list default="true" id="19b08ade-ed3d-4dd8-a939-0b93b80bc8e6" name="Changes" comment="versão semifinal">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/api/RetrofitService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/api/RetrofitService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/TelaCriacao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/TelaCriacao.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/TelaViewAvaliacao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/adevinta/mappicker/front/avaliacoes/TelaViewAvaliacao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leku/src/main/java/com/adevinta/leku/LocationPickerActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/leku/src/main/java/com/adevinta/leku/LocationPickerActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leku/src/main/java/com/adevinta/leku/api/RetrofitService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/leku/src/main/java/com/adevinta/leku/api/RetrofitService.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

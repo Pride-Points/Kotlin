@@ -103,6 +103,8 @@ fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>,  nomeFantasia: String, empresa
                 onClick = {
                     val intent = Intent(context, TelaCriacao::class.java).apply {
                         putExtra("EMPRESA_ID2", empresaId)
+                        putExtra("EMPRESA_NOME2", nomeFantasia)
+
                     }
                     context.startActivity(intent)
                           },
@@ -128,6 +130,8 @@ fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>,  nomeFantasia: String, empresa
                 onClick = {
                     val intent = Intent(context, TelaCriacao::class.java).apply {
                         putExtra("EMPRESA_ID2", empresaId)
+                        putExtra("EMPRESA_NOME2", nomeFantasia)
+
                     }
                     context.startActivity(intent)
                           },

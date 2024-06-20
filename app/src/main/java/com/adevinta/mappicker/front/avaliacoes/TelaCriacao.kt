@@ -82,6 +82,8 @@ class TelaCriacao : ComponentActivity() {
 }
     @Composable
     fun TelaCriacao(activity: Activity, avaliacaoViewModel: AvaliacaoViewModel, empresaId: Long) {
+        var selectedButton by remember { mutableStateOf("") }
+
         val context = LocalContext.current
 
         val text = buildAnnotatedString {
@@ -156,99 +158,96 @@ class TelaCriacao : ComponentActivity() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Column(verticalArrangement = Arrangement.Center) {
-            val color = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFFFFFFF),
-                contentColor = Color(0xFF000000)
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(0.7f),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            Column(verticalArrangement = Arrangement.Center) {
+                val defaultColors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFFFFF),
+                    contentColor = Color(0xFF000000)
+                )
 
-                Button(modifier = Modifier
-                    .size(120.dp, 40.dp)
-                    .border(
-                        1.dp, Color.Black, RoundedCornerShape(10.dp)
-                    ),
-                    colors = color,
-                    onClick = {
-                        novaEdit = novaEdit.copy(tag = "Amade")
-                    }) {
-                    Text(text = "Amade")
+                val selectedColors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFCCCCCC),
+                    contentColor = Color(0xFF000000)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(0.7f),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .size(120.dp, 40.dp)
+                            .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
+                        colors = if (selectedButton == "Amade") selectedColors else defaultColors,
+                        onClick = { selectedButton = "Amade" }
+                    ) {
+                        Text(text = "Amade")
+                    }
+
+                    Button(
+                        modifier = Modifier
+                            .size(120.dp, 40.dp)
+                            .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
+                        colors = if (selectedButton == "Brave") selectedColors else defaultColors,
+                        onClick = { selectedButton = "Brave" }
+                    ) {
+                        Text(text = "Brave")
+                    }
                 }
 
-                Button(modifier = Modifier
-                    .size(120.dp, 40.dp)
-                    .border(
-                        1.dp, Color.Black, RoundedCornerShape(10.dp)
-                    ),
-                    colors = color, onClick = {
-                        novaEdit = novaEdit.copy(tag = "Brave")
-                    }) {
-                    Text(text = "Brave")
-                }
-            }
+                Spacer(modifier = Modifier.height(30.dp))
 
-            Spacer(modifier = Modifier.height(30.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(0.7f),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .size(120.dp, 40.dp)
+                            .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
+                        colors = if (selectedButton == "Acolhide") selectedColors else defaultColors,
+                        onClick = { selectedButton = "Acolhide" }
+                    ) {
+                        Text(text = "Acolhide")
+                    }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(0.7f),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Button(modifier = Modifier
-                    .size(120.dp, 40.dp)
-                    .border(
-                        1.dp, Color.Black, RoundedCornerShape(10.dp)
-                    ),
-                    colors = color, onClick = {
-                        novaEdit = novaEdit.copy(tag = "Acolhide")
-                    }) {
-                    Text(text = "Acolhide")
+                    Button(
+                        modifier = Modifier
+                            .size(120.dp, 40.dp)
+                            .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
+                        colors = if (selectedButton == "Frustrade") selectedColors else defaultColors,
+                        onClick = { selectedButton = "Frustrade" }
+                    ) {
+                        Text(text = "Frustrade")
+                    }
                 }
 
-                Button(modifier = Modifier
-                    .size(120.dp, 40.dp)
-                    .border(
-                        1.dp, Color.Black, RoundedCornerShape(10.dp)
-                    ),
-                    colors = color, onClick = {
-                        novaEdit = novaEdit.copy(tag = "Frustrade")
-                    }) {
-                    Text(text = "Frustrade")
-                }
-            }
-            Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(0.7f),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(0.7f),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .size(120.dp, 40.dp)
+                            .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
+                        colors = if (selectedButton == "Feliz") selectedColors else defaultColors,
+                        onClick = { selectedButton = "Feliz" }
+                    ) {
+                        Text(text = "Feliz")
+                    }
 
-                Button(modifier = Modifier
-                    .size(120.dp, 40.dp)
-                    .border(
-                        1.dp, Color.Black, RoundedCornerShape(10.dp)
-                    ),
-                    colors = color, onClick = {
-                        novaEdit = novaEdit.copy(tag = "Feliz")
-                    }) {
-                    Text(text = "Feliz")
-                }
-
-                Button(modifier = Modifier
-                    .size(120.dp, 40.dp)
-                    .border(
-                        1.dp, Color.Black, RoundedCornerShape(10.dp)
-                    ),
-                    colors = color, onClick = {
-                        novaEdit = novaEdit.copy(tag = "Humilhade")
-                    }) {
-                    Text(text = "Humilhade")
+                    Button(
+                        modifier = Modifier
+                            .size(120.dp, 40.dp)
+                            .border(1.dp, Color.Black, RoundedCornerShape(10.dp)),
+                        colors = if (selectedButton == "Humilhade") selectedColors else defaultColors,
+                        onClick = { selectedButton = "Humilhade" }
+                    ) {
+                        Text(text = "Humilhade")
+                    }
                 }
             }
-        }
 
         Spacer(modifier = Modifier.height(30.dp))
 

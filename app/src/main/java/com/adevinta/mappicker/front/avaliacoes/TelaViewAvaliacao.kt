@@ -49,17 +49,20 @@ class TelaAvaliacaoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val empresaId = intent.getLongExtra("EMPRESA_ID", -1)
+        var empresaNome = intent.getStringExtra("EMPRESA_NOME")
 
-
+        if(empresaNome.isNullOrEmpty()){
+            empresaNome = "Sucos da vandinha"
+        }
         viewModel.carregarAvaliacoesDaEmpresa(this, empresaId)
         viewModel.avaliacoes.observe(this, Observer { avaliacoes ->
             setContent {
                 if(avaliacoes.isNullOrEmpty()){
                     viewModel2.buscarEmpresaPorId(empresaId)
 
-                    TelaAvaliacao(avaliacoes = emptyList(), "Suco da vandinha",empresaId)
+                    TelaAvaliacao(avaliacoes = emptyList(), empresaNome,empresaId)
                 }else{
-                    TelaAvaliacao(avaliacoes, "Suco da vandinha",empresaId)
+                    TelaAvaliacao(avaliacoes, empresaNome,empresaId)
                 }
             }
         })
@@ -77,7 +80,11 @@ class TelaAvaliacaoActivity : ComponentActivity() {
 @Composable
 fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>,  nomeFantasia: String, empresaId:Long) {
     val context = LocalContext.current
-
+    val mediaNotas = if (avaliacoes.isNotEmpty()) {
+        avaliacoes.map { it.nota }.average().toFloat()
+    } else {
+        0f
+    }
 
     Column(
         modifier = Modifier
@@ -90,7 +97,7 @@ fun TelaAvaliacao(avaliacoes: List<AvaliacaoDTO>,  nomeFantasia: String, empresa
         Spacer(modifier = Modifier.height(40.dp))
 
         if (avaliacoes.isNotEmpty()) {
-            TituloENota(estabelecimento = nomeFantasia, nota = avaliacoes[0].nota.toFloat())
+            TituloENota(estabelecimento = nomeFantasia, nota = mediaNotas)
             DescricaoDoEstabelecimento(descricao = "Horario de funcionamento: 08:00 - 18:00")
             Button(
                 onClick = {

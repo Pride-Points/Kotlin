@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitService {
 
-    val BASE_URL_FILMES = "http://10.0.2.2:8080/api/"
+    val BASE_URL_FILMES = "https://pride-points.zapto.org/api/"
 
     fun getApipridepointsService(): Apipridepoints {
         val cliente =

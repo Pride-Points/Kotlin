@@ -269,7 +269,7 @@ class LocationPickerActivity :
         val dono: String?
     )
 
-     override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         updateValuesFromBundle(savedInstanceState)
         setUpContentView()
@@ -282,13 +282,13 @@ class LocationPickerActivity :
         setUpFloatingButtons()
         buildGoogleApiClient()
 
-         lifecycleScope.launch {
-             val empresas2 = empresaViewModel.fetchEmpresas()
-                 addMarkersFromEmpresas(empresas2)
+        lifecycleScope.launch {
+            val empresas2 = empresaViewModel.fetchEmpresas()
+            addMarkersFromEmpresas(empresas2)
 
-         }
+        }
 
-         track(TrackEvents.ON_LOAD_LOCATION_PICKER)
+        track(TrackEvents.ON_LOAD_LOCATION_PICKER)
     }
     private val empresaViewModel = EmpresaViewModel() // Instantiate the ViewModel
 
@@ -306,6 +306,7 @@ class LocationPickerActivity :
                         val marker = map!!.addMarker(
                             MarkerOptions().position(it).title(empresa.nomeFantasia)
                         )
+                        marker?.tag = empresa.nomeFantasia
                         marker?.tag = empresa.id  // Salvar o ID da empresa no marcador
                     }
                 }
@@ -313,16 +314,18 @@ class LocationPickerActivity :
         }
     }
 
-    private fun navigateToTelaAvaliar(empresaId: Long) {
+    private fun navigateToTelaAvaliar(empresaId: Long, nomeFantasia: String) {
         val intent = Intent().apply {
             action = "com.adevinta.mappicker.ACTION_VIEW_DETAILS"
             putExtra(LATITUDE, currentLocation?.latitude)
             putExtra(LONGITUDE, currentLocation?.longitude)
             putExtra("EMPRESA_ID", empresaId)
+            putExtra("EMPRESA_NOME", nomeFantasia)
         }
         startActivity(intent)
         track(TrackEvents.SIMPLE_ON_LOCALIZE_BY_POI)
     }
+
 
     private suspend fun getCoordinatesFromAddress(context: Context, address: String): LatLng? {
         return withContext(Dispatchers.IO) {
@@ -794,10 +797,16 @@ class LocationPickerActivity :
             setPois()
 
             it.setOnMarkerClickListener { marker ->
+                val nomeFantasia = marker.title as? String
                 val empresaId = marker.tag as? Long
-                empresaId?.let {
-                    navigateToTelaAvaliar(it)
+                if(nomeFantasia.isNullOrEmpty()){
+
+                }else{
+                    empresaId?.let {
+                        navigateToTelaAvaliar(it,nomeFantasia)
+                    }
                 }
+
                 true
             }
         }
